@@ -1,0 +1,73 @@
+/* ===== PALETA BASE ===== */
+:root {
+  --color-primary: #040FD9;
+  --color-secondary: #030A8C;
+  --color-dark: #010440;
+  --color-light: #EAEFFF;
+  --color-accent: #00D4FF;
+
+  /* ===== BOOTSTRAP MAPPING ===== */
+  --bs-primary: var(--color-primary);
+  --bs-primary-rgb: 4, 15, 217;
+
+  --bs-secondary: var(--color-secondary);
+  --bs-secondary-rgb: 3, 10, 140;
+
+  --bs-dark: var(--color-dark);
+  --bs-dark-rgb: 1, 4, 64;
+
+  --bs-body-bg: var(--color-light);
+
+  /* Subtle */
+  --bs-primary-bg-subtle: #EAEFFF;
+  --bs-primary-border-subtle: #040FD9;
+  --bs-primary-text-emphasis: #030A8C;
+
+  /* Links */
+  --bs-link-color: var(--color-primary);
+  --bs-link-hover-color: var(--color-secondary);
+}
+
+
+
+/*Navegacion*/
+
+
+
+.nav-link {
+    font-size: 17px;
+    font-weight:600;
+    color: white;
+    margin: 1rem;
+}
+
+.navbar {
+  padding: 10px 0;
+}
+.navbar-brand img {
+  width: auto;
+  height: 80px;
+  padding: 0;
+
+}
+
+.hero {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    
+
+}
+
+.form-control {
+    background: #fff;
+    border-radius: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+}   
+
+.form-control:focus {
+    border-color: #040FD9;
+    box-shadow: 0 0 0 0.2rem rgba(4,15,217,0.25);
+}
