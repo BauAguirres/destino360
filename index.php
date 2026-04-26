@@ -112,7 +112,80 @@
 
             </div>
 
+            <div class="container shadow-lg p-3 mb-5 bg-body-tertiary rounded mt-5">
+                <div id="carouselExampleFade" class="carousel slide carousel-fade">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                        <img src="assets/img/paisaje1.webp" class="d-block w-100" alt="...">
+                        </div>
+                        <div class="carousel-item">
+                        <img src="assets/img/paisaje2.webp" class="d-block w-100" alt="...">
+                        </div>
+                        <div class="carousel-item">
+                        <img src="assets/img/paisaje3.webp" class="d-block w-100" alt="...">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
 
+
+                <div class="row justify-content-center gap-0 text-start info">
+                    <div class="col-md-4">
+                        <div class="cardCustom h-100">
+                            
+                            <div class="d-flex align-items-start gap-3">
+                            <i class="bi bi-credit-card-2-front fs-2 icono"></i>
+
+                            <div>
+                                <h5 class="fw-bold mb-1">Medios de Pago</h5>
+                                <p class="mb-0">Cuotas con tarjetas, promociones bancarias y más</p>
+                            </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="cardCustom h-100">
+                            
+                            <div class="d-flex align-items-start gap-3">
+                            <i class="bi bi-gift fs-2 icono"></i>
+
+                            <div>
+                                <h5 class="fw-bold mb-1">Beneficios y Cupones</h5>
+                                <p class="mb-0">Acumulá puntos Pasaporte y aprovechá todos los cupones que tenemos para vos</p>
+                            </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="cardCustom h-100">
+                            
+                            <div class="d-flex align-items-start gap-3">
+                            <i class="bi bi-person-circle fs-2 icono"></i>
+
+                            <div>
+                                <h5 class="fw-bold mb-1">Atención al cliente</h5>
+                                <p class="mb-0">Soporte 24/7 para ayudarte</p>
+                            </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+
+            </div>
         </div>
     </main>
 
