@@ -29,9 +29,34 @@
 }
 
 
+.nav-link:hover {
+    color: var(--color-light) !important;
+    transform: scale(1.1);
+    transition: all 0.3s ease;
+}
+
+
+.btn-primary {
+  background-color: var(--color-secondary) !important;
+  border-color: var(--color-secondary) !important;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+}
+
+.btn-outline-primary {
+  color: var(--color-secondary);
+  border-color: var(--color-secondary);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--color-secondary);
+  color: white;
+}
 
 /*Navegacion*/
-
 
 
 .nav-link {
@@ -71,3 +96,38 @@
     border-color: #040FD9;
     box-shadow: 0 0 0 0.2rem rgba(4,15,217,0.25);
 }
+
+.menu-flotante {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 350px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: grey 0px 4px 8px;
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: 0.3s;
+
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.btnPasajeros {
+    width: 40px;
+    height: 40px;
+}
+
+
+
+.menu-flotante.mostrar {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
