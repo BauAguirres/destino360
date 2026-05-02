@@ -165,3 +165,18 @@
 .icono {
   color: var(--color-secondary);
 }
+
+
+/*cards*/
+
+
+
+.card {
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+  cursor: pointer;
+}

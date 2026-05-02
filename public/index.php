@@ -1,46 +1,8 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Destino360</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body>
-    
-    <header>
-        <nav class="navbar navbar-dark navbar-expand-lg bg-secondary">
-            <div class="container">
-                <a href="#" class="navbar-brand">
-                    <img src="assets/img/logo.png" alt="Logo">
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                    <a class="nav-link" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="#">Features</a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="#">Pricing</a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="#">Disabled</a>
-                    </li>
-                </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
+<?php include '../layouts/header.php'; ?>
+
 
     <main>
-        <div class=" bg-primary-subtle py-5">
+        <div class=" bg-primary-subtle py-3">
             <div class="container hero py-5 rounded-2">
                 <form action="" class="bg-light p-4 rounded-2">
                     <div class="row align-items-center justify-content-center g-3 ">
@@ -137,7 +99,7 @@
 
 
                 <div class="row justify-content-center gap-0 text-start info">
-                    <div class="col-md-4">
+                    <div class="col-md-4 mb-4">
                         <div class="cardCustom h-100">
                             
                             <div class="d-flex align-items-start gap-3">
@@ -151,7 +113,7 @@
 
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 mb-4">
                         <div class="cardCustom h-100">
                             
                             <div class="d-flex align-items-start gap-3">
@@ -165,7 +127,7 @@
 
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 mb-4">
                         <div class="cardCustom h-100">
                             
                             <div class="d-flex align-items-start gap-3">
@@ -182,6 +144,50 @@
 
                 </div>
 
+                <div class="container text-center mt-2">
+                        <h1 class="mb-4">Destinos Destacados</h1>
+                    <div class="row justify-content-center gap-4">
+                        <div class="col-12 col-md-3">
+                            <div class="card">
+                                <img src="..." class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">Card title</h5>
+                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
+                                    <a href="detalle.html" class="stretched-link"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card">
+                                <img src="..." class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">Card title</h5>
+                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
+                                    <a href="detalle.html" class="stretched-link"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card">
+                                <img src="..." class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">Card title</h5>
+                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
+                                    <a href="detalle.html" class="stretched-link"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-md-end mt-4">
+                            <button class="btn btn-primary">Mostrar Todos</button>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+
+
 
 
 
@@ -194,16 +200,5 @@
 
 
 
+<?php include '../layouts/footer.php'; ?>
 
-
-
-
-
-
-
-
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/main.js"></script>
-</body>
-</html>
