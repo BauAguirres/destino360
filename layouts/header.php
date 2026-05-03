@@ -22,16 +22,48 @@
                 <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                    <a class="nav-link" href="index.php">Inicio</a>
+                    <a class="nav-link" href="../public/index.php">Inicio</a>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link" href="vuelos.php">Vuelos</a>
+                    <a class="nav-link" href="../public/vuelos.php">Vuelos</a>
                     </li>
                     <li class="nav-item">
                     <a class="nav-link" href="#">Aerolines</a>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link" href="admin/index.php">Login</a>
+                        <button class="btn nav-link" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Iniciar Sesión</button>
+                        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content text-center">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Iniciar sesión</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="">
+                                            <div class="mb-3">
+                                                <label for="email" class="form-label">Correo Electrónico</label>
+                                                <input type="email" class="form-control" id="email" placeholder="Ingrese su correo electrónico">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="password" class="form-label">Contraseña</label>
+                                                <input type="password" class="form-control" id="password" placeholder="Ingrese su contraseña">
+                                            </div>
+                                            <a href="#" class="text-decoration-none">
+                                                ¿Olvidaste tu contraseña?
+                                            </a>
+                                            <button type="submit" class="mx-5 btn btn-primary">Iniciar Sesión</button>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer justify-content-center">
+                                        <span>¿No tenés cuenta?</span>
+                                        <a href="registro.php" class="ms-1">Registrate</a>
+                                        <span class="mx-2">|</span>
+                                        <a href="registro-ceo.php">¿Sos CEO?</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </li>
                 </ul>
                 </div>
