@@ -3,7 +3,7 @@
 require_once '../controllers/crudUsuarios.php';
 
 
-$crud = new crudUsuarios();
+$crud = new CrudUsuarios();
 $err = '';
 
 $token = $_GET['token'] ?? '';

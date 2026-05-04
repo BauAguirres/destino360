@@ -11,7 +11,8 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
     $telefono = $_POST['telefono'];
     $password = $_POST['password'];
     $password2 = $_POST['password2'];
-    $rol = 1; // Usuario 
+    $rol = 0; // pendiente de aprobación
+    $aerolinea = $_POST['aerolinea'];
 
 
     if(empty($usuario) || empty($email) || empty($telefono) || empty($password) || empty($password2)) {
@@ -23,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
         $err = 'Las contraseñas no coinciden';
     } else {
         $token = bin2hex(random_bytes(32));
-        $crud -> crearUsuario($usuario, $email, $telefono, $password, $token, $rol);
+        $crud -> crearUsuario($usuario, $email, $telefono, $password, $token, $rol, $aerolinea);
 
         $link = "http://localhost/entorno/public/verificar.php?token=$token";
 
@@ -119,9 +120,15 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
                             <label for="telefono">Teléfono</label>
                             <input type="text" class="form-control" name="telefono" id="telefono" required>
                         </div>
-                        <div class="col-md-12 my-2">
+                        <div class="col-md-6 my-2">
                             <label for="email">Email</label>
                             <input type="email" class="form-control" name="email" id="email" required>
+                        </div>
+                        <div class="col-md-6 my-2">
+                            <label for="aerolinea">Aerolinea</label>
+                            <select name="aerolinea" id="aerolinea" class="form-control" required>
+                                <option value="">Seleccionar Aerolinea</option>
+                            </select>
                         </div>
                         <div class="col-md-6 my-2">
                             <label for="password">Contraseña</label>
