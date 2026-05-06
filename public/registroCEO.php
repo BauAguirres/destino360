@@ -1,6 +1,18 @@
 <?php
 
 require_once '../controllers/crudUsuarios.php';
+require_once '../controllers/crudAerolineas.php';
+
+$aero = new CrudAerolineas();
+$resultado = $aero->listarAerolineas();
+
+$aerolineas = [];
+
+if ($resultado) {
+    while ($fila = mysqli_fetch_assoc($resultado)) {
+        $aerolineas[] = $fila;
+    }
+}
 
 $crud = new CrudUsuarios();
 $err = '';
@@ -11,20 +23,20 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
     $telefono = $_POST['telefono'];
     $password = $_POST['password'];
     $password2 = $_POST['password2'];
-    $rol = 0; // pendiente de aprobación
     $aerolinea = $_POST['aerolinea'];
 
 
     if(empty($usuario) || empty($email) || empty($telefono) || empty($password) || empty($password2)) {
         $err = 'Todos los campos son obligatorios';
-    } else if (strlen($password) < 8) {
+    } else if (strlen($password) > 8) {
         $err = 'La contraseña debe tener como maximo 8 caracteres';
 
     } else if ($password !== $password2) {
         $err = 'Las contraseñas no coinciden';
     } else {
         $token = bin2hex(random_bytes(32));
-        $crud -> crearUsuario($usuario, $email, $telefono, $password, $token, $rol, $aerolinea);
+        $crud -> crearCEO($usuario, $email, $telefono, $password, $token, $aerolinea);
+
 
         $link = "http://localhost/entorno/public/verificar.php?token=$token";
 
@@ -110,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
                 </div>
 
 
-                <form action="registro.php" method="POST">
+                <form action="registroCEO.php" method="POST">
                     <div class="row ">
                         <div class="col-md-6 my-2">
                             <label for="usuario">Nombre de Usuario</label>
@@ -128,6 +140,9 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
                             <label for="aerolinea">Aerolinea</label>
                             <select name="aerolinea" id="aerolinea" class="form-control" required>
                                 <option value="">Seleccionar Aerolinea</option>
+                                <?php foreach ($aerolineas as $aerolinea): ?>
+                                    <option value="<?php echo $aerolinea['idAerolinea']; ?>"><?php echo $aerolinea['nombre']; ?></option>
+                            <?php endforeach; ?>
                             </select>
                         </div>
                         <div class="col-md-6 my-2">

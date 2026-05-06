@@ -1,4 +1,4 @@
-<?php include '../../layouts/headerAdmin.php'; ?>
+<?php include '../../layouts/headerCEO.php'; ?>
 
 
     <main>

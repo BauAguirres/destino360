@@ -11,19 +11,19 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
     $telefono = $_POST['telefono'];
     $password = $_POST['password'];
     $password2 = $_POST['password2'];
-    $rol = 1; // Usuario 
+
 
 
     if(empty($usuario) || empty($email) || empty($telefono) || empty($password) || empty($password2)) {
         $err = 'Todos los campos son obligatorios';
-    } else if (strlen($password) < 8) {
+    } else if (strlen($password) >= 8) {
         $err = 'La contraseña debe tener como maximo 8 caracteres';
 
     } else if ($password !== $password2) {
         $err = 'Las contraseñas no coinciden';
     } else {
         $token = bin2hex(random_bytes(32));
-        $crud -> crearUsuario($usuario, $email, $telefono, $password, $token, $rol);
+        $crud -> crearUsuario($usuario, $email, $telefono, $password, $token);
 
         $link = "http://localhost/entorno/public/verificar.php?token=$token";
 

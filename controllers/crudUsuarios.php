@@ -1,6 +1,6 @@
 <?php
 
-require_once '../config/db.php';
+require_once __DIR__ . '/../config/db.php';
 
 
 class CrudUsuarios {
@@ -18,14 +18,20 @@ class CrudUsuarios {
     }
 
     public function obtenerUsuario($id) {
-        $query = "SELECT * FROM usuario WHERE id = '$id'";
+        $query = "SELECT * FROM usuario WHERE idUsuario = '$id'";
         $resultado = mysqli_query($this->db, $query);
         return mysqli_fetch_assoc($resultado);
     }
 
-    public function crearUsuario($usuario, $email, $telefono, $password, $token, $rol, $aerolinea = null) {
+    public function obtenerUsuariosPorRol($rol) {
+        $query = "SELECT * FROM usuario WHERE rol = '$rol'";
+        $resultado = mysqli_query($this->db, $query);
+        return $resultado;
+    }
+
+    public function crearUsuario($usuario, $email, $telefono, $password, $token) {
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-        $query = "INSERT INTO usuario (nombreUsuario, email, telefono, password, tokenVerif, rol, id_aerolinea) VALUES ('$usuario', '$email', '$telefono', '$passwordHash', '$token', $rol, '$aerolinea')";
+        $query = "INSERT INTO usuario (nombreUsuario, email, telefono, password, tokenVerif, rol, estado) VALUES ('$usuario', '$email', '$telefono', '$passwordHash', '$token', 'usuario', 'verificado')";
         return mysqli_query($this->db, $query);
     }
 
@@ -45,16 +51,33 @@ class CrudUsuarios {
         return mysqli_query($this->db, $query);
     }
 
+    //CEO
+
+    public function crearCEO($usuario, $email, $telefono, $password, $token, $aerolinea) {
+        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+        $query = "INSERT INTO usuario (nombreUsuario, email, telefono, password, tokenVerif, rol, estado, idAerolinea) VALUES ('$usuario', '$email', '$telefono', '$passwordHash', '$token', 'CEO', 'pendiente', '$aerolinea')";
+        return mysqli_query($this->db, $query);
+    }
+    
+    public function obtenerCEOsEstado($estado) {
+        $query = "SELECT u.*, a.nombre FROM usuario u JOIN aerolinea a ON u.idAerolinea = a.idAerolinea WHERE u.rol = 'CEO' AND u.estado = '$estado'";
+        $resultado = mysqli_query($this->db, $query);
+        return $resultado;
+    }
+
+    public function obtenerCEO() {
+        $query = "SELECT u.*, a.nombre FROM usuario u JOIN aerolinea a ON u.idAerolinea = a.idAerolinea WHERE u.estado != 'pendiente' AND u.rol = 'CEO'";
+        $resultado = mysqli_query($this->db, $query);
+        return $resultado;
+    }
+
     public function aprobarCEO($id) {
-        $query = "UPDATE usuario SET rol = 2 WHERE id = '$id'";
+        $query = "UPDATE usuario SET estado = 'verificado' WHERE idUsuario = '$id'";
         return mysqli_query($this->db, $query);
     }
 
     public function rechazarCEO($id) {
-        $query = "UPDATE usuario SET rol = 3 WHERE id = '$id'";
+        $query = "UPDATE usuario SET estado = 'rechazado' WHERE idUsuario = '$id'";
         return mysqli_query($this->db, $query);
     }
-
-    
-
 }
