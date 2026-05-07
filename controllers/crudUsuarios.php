@@ -31,7 +31,7 @@ class CrudUsuarios {
 
     public function crearUsuario($usuario, $email, $telefono, $password, $token) {
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-        $query = "INSERT INTO usuario (nombreUsuario, email, telefono, password, tokenVerif, rol, estado) VALUES ('$usuario', '$email', '$telefono', '$passwordHash', '$token', 'usuario', 'verificado')";
+        $query = "INSERT INTO usuario (nombreUsuario, email, telefono, password, tokenVerif, rol, estadoUsuario) VALUES ('$usuario', '$email', '$telefono', '$passwordHash', '$token', 'usuario', 'verificado')";
         return mysqli_query($this->db, $query);
     }
 
@@ -55,29 +55,29 @@ class CrudUsuarios {
 
     public function crearCEO($usuario, $email, $telefono, $password, $token, $aerolinea) {
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-        $query = "INSERT INTO usuario (nombreUsuario, email, telefono, password, tokenVerif, rol, estado, idAerolinea) VALUES ('$usuario', '$email', '$telefono', '$passwordHash', '$token', 'CEO', 'pendiente', '$aerolinea')";
+        $query = "INSERT INTO usuario (nombreUsuario, email, telefono, password, tokenVerif, rol, estadoUsuario, idAerolinea) VALUES ('$usuario', '$email', '$telefono', '$passwordHash', '$token', 'CEO', 'pendiente', '$aerolinea')";
         return mysqli_query($this->db, $query);
     }
     
     public function obtenerCEOsEstado($estado) {
-        $query = "SELECT u.*, a.nombre FROM usuario u JOIN aerolinea a ON u.idAerolinea = a.idAerolinea WHERE u.rol = 'CEO' AND u.estado = '$estado'";
+        $query = "SELECT u.*, a.nombre FROM usuario u JOIN aerolinea a ON u.idAerolinea = a.idAerolinea WHERE u.rol = 'CEO' AND u.estadoUsuario = '$estado'";
         $resultado = mysqli_query($this->db, $query);
         return $resultado;
     }
 
     public function obtenerCEO() {
-        $query = "SELECT u.*, a.nombre FROM usuario u JOIN aerolinea a ON u.idAerolinea = a.idAerolinea WHERE u.estado != 'pendiente' AND u.rol = 'CEO'";
+        $query = "SELECT u.*, a.nombre FROM usuario u JOIN aerolinea a ON u.idAerolinea = a.idAerolinea WHERE u.estadoUsuario != 'pendiente' AND u.rol = 'CEO'";
         $resultado = mysqli_query($this->db, $query);
         return $resultado;
     }
 
     public function aprobarCEO($id) {
-        $query = "UPDATE usuario SET estado = 'verificado' WHERE idUsuario = '$id'";
+        $query = "UPDATE usuario SET estadoUsuario = 'verificado' WHERE idUsuario = '$id'";
         return mysqli_query($this->db, $query);
     }
 
     public function rechazarCEO($id) {
-        $query = "UPDATE usuario SET estado = 'rechazado' WHERE idUsuario = '$id'";
+        $query = "UPDATE usuario SET estadoUsuario = 'rechazado' WHERE idUsuario = '$id'";
         return mysqli_query($this->db, $query);
     }
 }

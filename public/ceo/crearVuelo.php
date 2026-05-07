@@ -2,39 +2,33 @@
 define('BASE_PATH', __DIR__ . '/../../');
 
 require_once BASE_PATH . 'config/app.php';
-require_once BASE_PATH . 'controllers/CrudAerolineas.php';
+require_once BASE_PATH . 'controllers/CrudVuelos.php';
 
-$crud = new CrudAerolineas();
+$crud = new crudVuelos();
 $err = '';
 $exito = '';
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nombre = $_POST['nombre'];
-    $codIATA = $_POST['codIATA'];
-    $codPais = $_POST['codPais'];
-    $descripcion = $_POST['descripcion'];
+    $idAerolinea = $_POST['idAerolinea'];
+    $origen = $_POST['origen'];
+    $destino = $_POST['destino'];
+    $asientosTotales = $_POST['asientosTotales'];
+    $asientosDisponibles = $asientosTotales;
+    $precio = $_POST['precio'];
     $estado = 0; // Baja por defecto
-    $urlLogo = NULL;  
+
     
     
-    if (empty($nombre) || empty($codIATA) || empty($codPais)) {
+    if (empty($idAerolinea) || empty($origen) || empty($destino) || empty($asientosTotales) || empty($asientosDisponibles) || empty($precio)) {
         $err = 'Todos los campos son obligatorios';
     } else {
-        
-        if (isset($_FILES['logo']) && $_FILES['logo']['error'] !== UPLOAD_ERR_NO_FILE) {
-            $resultado = guardarLogo($_FILES['logo']);
-            
-            if (isset($resultado['error'])) {
-                $err = $resultado['error'];
-            } else {
-                $urlLogo = $resultado['nombre'];
-            }
-        }
 
         if (empty($err)) {
-            $crud->crearAerolinea($nombre, $codIATA, $codPais, $estado, $descripcion, $urlLogo);
-            $exito = 'Aerolínea creada correctamente';
+            $crud->crearVuelo($idAerolinea, $origen, $destino, $asientosTotales, $asientosDisponibles, $precio, $estado);
+            $exito = 'Vuelo creado correctamente';
+            header('Location: vuelos.php?exito=' . urlencode($exito));
+            exit();
         }
     }
 }
@@ -72,11 +66,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="bg-primary-subtle py-3">
             <div class="shadow-lg p-3 mb-5 bg-body rounded container">
                 <div class="text-center">
-                    <h1>Crear Aerolínea</h1>
-                    <p>Completa los datos para crear una nueva aerolínea</p>
+                    <h1>Crear Vuelo</h1>
+                    <p>Completa los datos para crear un nuevo vuelo</p>
 
 
-                <form action="crearAerolinea.php" method="POST" enctype="multipart/form-data">
+                <form action="crearVuelo.php" method="POST" enctype="multipart/form-data">
                     <div class="row fs-4">
                         <?php if ($err): ?>
                                 <div class="alert alert-danger alert-dismissible fade show w-50 m-auto my-3" role="alert">
@@ -92,26 +86,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </div>
                         <?php endif; ?>
                         <div class="col-md-12 my-2">
-                            <label for="nombre">Nombre de Aerolinea</label>
-                            <input type="text" class="form-control" name="nombre" id="nombre" required>
+                            <label for="idAerolinea">ID Aerolinea</label>
+                            <input type="text" class="form-control" name="idAerolinea" id="idAerolinea" required>
                         </div>
                         <div class="col-md-6 my-2">
-                            <label for="codIATA">Codigo IATA</label>
-                            <input type="text" class="form-control" name="codIATA" id="codIATA" required>
+                            <label for="origen">Origen</label>
+                            <input type="text" class="form-control" name="origen" id="origen" required>
                         </div>
                         <div class="col-md-6 my-2">
-                            <label for="codPais">Codigo País</label>
-                            <input type="text" class="form-control" name="codPais" id="codPais" required>
+                            <label for="destino">Destino</label>
+                            <input type="text" class="form-control" name="destino" id="destino" required>
                         </div>
-                        <div class="col-md-12 my-2">
-                            <label for="formFile" class="form-label">Logo de la Aerolínea</label>
-                            <input class="form-control" type="file" id="formFile" name="logo" accept=".jpg,.jpeg,.png">
+                        <div class="col-md-6 my-2">
+                            <label for="asientosTotales">Asientos Totales</label>
+                            <input type="number" class="form-control" name="asientosTotales" id="asientosTotales" required>
                         </div>
-                        <div class="col-md-12 my-2">
-                            <label for="descripcion">Descripción</label>
-                            <textarea class="form-control" name="descripcion" id="descripcion" rows="3"></textarea>
+                        <div class="col-md-6 my-2">
+                            <label for="precio">Precio</label>
+                            <input type="number" class="form-control" name="precio" id="precio" step="0.01" required>
                         </div>
-                        <button type="submit" class="btn btn-primary">Crear Aerolinea</button>
+                        <button type="submit" class="btn btn-primary">Crear Vuelo</button>
                     </div>
                     
                 </form>

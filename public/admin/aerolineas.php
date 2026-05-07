@@ -91,7 +91,7 @@ $exito = $_GET['exito'] ?? null;
                                             <p class="card-text">Código País: <?php echo ($aerolinea['codPais']??'Código no disponible'); ?></p>
                                             <p class="card-text">
                                             <strong>Estado:</strong> 
-                                            <?php if (($aerolinea['estado'] ?? 0) == 1): ?>
+                                            <?php if (($aerolinea['estadoAerolinea'] ?? 0) == 1): ?>
                                                 <span class="badge bg-success">Activa</span>
                                             <?php else: ?>
                                                 <span class="badge bg-danger">Inactiva</span>
@@ -101,7 +101,7 @@ $exito = $_GET['exito'] ?? null;
                                         </div>
                                         <div class="btn-group" role="group" aria-label="Basic outlined example">
                                             <a href="actions/desActivarAerolinea.php?idAerolinea=<?php echo $aerolinea['idAerolinea']; ?>" class="btn btn-outline-primary"  onclick="return confirm('Estás Seguro que desea cambiar el estado de la Aerolínea?' )" >
-                                                <?php if($aerolinea['estado']==1){
+                                                <?php if($aerolinea['estadoAerolinea']==1){
                                                     echo 'Desactivar';
                                                 } else {
                                                     echo 'Activar';

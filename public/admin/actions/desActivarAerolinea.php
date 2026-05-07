@@ -30,7 +30,7 @@ if ($aerolinea['estado'] == 0) {
     exit;
 }
 
-elseif ($aerolinea['estado'] == 1){
+elseif ($aerolinea['estadoAerolinea'] == 1){
     $crud->desactivarAerolinea($id);
     header('Location: ../aerolineas.php?$exito=Aerolinea_desactivada');
     exit;
