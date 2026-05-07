@@ -10,9 +10,9 @@
     <p class="card-text">Aerolinea: <?php echo ($usuario['nombre']??'Código no disponible'); ?></p>
     <p class="card-text">
       <strong>Estado:</strong> 
-      <?php if (($usuario['estado'] ?? 'rechazado') == 'verificado'): ?>
+      <?php if (($usuario['estadoUsuario'] ?? 'rechazado') == 'verificado'): ?>
         <span class="badge bg-success">Verificado</span>
-      <?php elseif (($usuario['estado'] ?? 'rechazado') == 'rechazado'): ?>
+      <?php elseif (($usuario['estadoUsuario'] ?? 'rechazado') == 'rechazado'): ?>
         <span class="badge bg-danger">Rechazado</span>
       <?php else: ?>
         <span class="badge bg-warning">Pendiente</span>

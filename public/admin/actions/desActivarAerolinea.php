@@ -22,7 +22,7 @@ if (!$aerolinea) {
     exit;
 }
 
-if ($aerolinea['estado'] == 0) {
+if ($aerolinea['estadoAerolinea'] == 0) {
 
 
     $crud->activarAerolinea($id);

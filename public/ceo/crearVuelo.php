@@ -3,10 +3,14 @@ define('BASE_PATH', __DIR__ . '/../../');
 
 require_once BASE_PATH . 'config/app.php';
 require_once BASE_PATH . 'controllers/CrudVuelos.php';
+require_once BASE_PATH . 'controllers/CrudAerolineas.php';
 
 $crud = new crudVuelos();
 $err = '';
 $exito = '';
+
+$crudAerolineas = new CrudAerolineas();
+$aerolineas = $crudAerolineas->listarAerolineasActivas();
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -26,8 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (empty($err)) {
             $crud->crearVuelo($idAerolinea, $origen, $destino, $asientosTotales, $asientosDisponibles, $precio, $estado);
-            $exito = 'Vuelo creado correctamente';
-            header('Location: vuelos.php?exito=' . urlencode($exito));
+            header('Location: vuelos.php?exito=Vuelo creado correctamente');
             exit();
         }
     }
@@ -86,8 +89,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </div>
                         <?php endif; ?>
                         <div class="col-md-12 my-2">
-                            <label for="idAerolinea">ID Aerolinea</label>
-                            <input type="text" class="form-control" name="idAerolinea" id="idAerolinea" required>
+                            <label for="idAerolinea">Aerolinea</label>
+                            <div class="option">
+                                <select class="form-control" name="idAerolinea" id="idAerolinea" required>
+                                    <option value="">Seleccionar Aerolinea</option>
+                                    <?php foreach ($aerolineas as $aerolinea): ?>
+                                        <option value="<?= $aerolinea['idAerolinea'] ?>"><?= $aerolinea['nombre'] ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
                         </div>
                         <div class="col-md-6 my-2">
                             <label for="origen">Origen</label>
@@ -105,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <label for="precio">Precio</label>
                             <input type="number" class="form-control" name="precio" id="precio" step="0.01" required>
                         </div>
-                        <button type="submit" class="btn btn-primary">Crear Vuelo</button>
+                        <button type="submit" class="my-4 btn btn-primary">Crear Vuelo</button>
                     </div>
                     
                 </form>

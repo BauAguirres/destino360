@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../config/db.php';
 
-class crudVuelos {
+class CrudVuelos {
 
     private $db;
 
@@ -18,6 +18,18 @@ class crudVuelos {
 
     public function crearVuelo($idAerolinea, $origen, $destino, $asientosTotales, $asientosDisp, $precio, $estado) {
         $query = "INSERT INTO vuelo (idAerolinea, origen, destino, asientosTotales, asientosDisp, precio, estadoVuelo) VALUES ('$idAerolinea', '$origen', '$destino', '$asientosTotales', '$asientosDisp', '$precio', '$estado')";
+        $resultado = mysqli_query($this->db, $query);
+        return $resultado;
+    }
+
+    public function eliminarVuelo($id) {
+        $query = "DELETE FROM vuelo WHERE idVuelo = $id";
+        $resultado = mysqli_query($this->db, $query);
+        return $resultado;
+    }
+
+    public function actualizarVuelo($id, $idAerolinea, $origen, $destino, $asientosTotales, $asientosDisp, $precio) {
+        $query = "UPDATE vuelo SET idAerolinea = '$idAerolinea', origen = '$origen', destino = '$destino', asientosTotales = '$asientosTotales', asientosDisp = '$asientosDisp', precio = '$precio' WHERE idVuelo = '$id'";
         $resultado = mysqli_query($this->db, $query);
         return $resultado;
     }

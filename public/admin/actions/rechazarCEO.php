@@ -17,7 +17,7 @@ if ($id) {
         exit;
     }
 
-    if ($usuario['estado'] !== 'pendiente') {
+    if ($usuario['estadoUsuario'] !== 'pendiente') {
         header('Location: ../usuarios.php?error=Usuario_no_pendiente');
         exit;
     }

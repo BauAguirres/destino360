@@ -3,7 +3,7 @@ define('BASE_PATH', __DIR__ . '/../../');
 
 require_once BASE_PATH . 'controllers/CrudVuelos.php';
 
-$crud = new crudVuelos();
+$crud = new CrudVuelos();
 $resultado = $crud->listarVuelos();
 
 $vuelos = [];
@@ -82,34 +82,24 @@ $exito = $_GET['exito'] ?? null;
                         <div class="row m-auto">
                             <?php foreach ($vuelos as $vuelo): ?>
                                 <div class="col-md-3 col-6 d-flex justify-content-center my-5">
-                                    <div class="card" style="width: 18rem;">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Destino: <?php echo ($vuelo['destino']??'Nombre no disponible'); ?></h5>
-                                            <p class="card-text">Origen: <?php echo ($vuelo['origen']??'Código no disponible'); ?></p>
-                                            <p class="card-text">Aerolinea: <?php echo ($vuelo['idAerolinea']??'Código no disponible'); ?></p>
-                                            <p class="card-text">
-                                            <strong>Estado:</strong> 
-                                            <?php if (($vuelo['estadoVuelo'] ?? 0) == 1): ?>
-                                                <span class="badge bg-success">Activa</span>
-                                            <?php else: ?>
-                                                <span class="badge bg-danger">Inactiva</span>
-                                            <?php endif; ?>
-                                            </p>
-                                            <p class="card-text">Asiento Totales: <?php echo ($vuelo['asientosTotales']??'Asientos no disponibles'); ?></p>
+                                    <a href="opcionesVuelo.php?idVuelo=<?= $vuelo['idVuelo'] ?>" class="text-decoration-none">
+                                        <div class="card" style="width: 18rem;">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Destino: <?php echo ($vuelo['destino']??'Nombre no disponible'); ?></h5>
+                                                <p class="card-text">Origen: <?php echo ($vuelo['origen']??'Código no disponible'); ?></p>
+                                                <p class="card-text">Aerolinea: <?php echo ($vuelo['nombre']??'Código no disponible'); ?></p>
+                                                <p class="card-text">
+                                                <strong>Estado:</strong> 
+                                                <?php if (($vuelo['estadoVuelo'] ?? 0) == 1): ?>
+                                                    <span class="badge bg-success">Activa</span>
+                                                <?php else: ?>
+                                                    <span class="badge bg-danger">Inactiva</span>
+                                                <?php endif; ?>
+                                                </p>
+                                                <p class="card-text">Asiento Totales: <?php echo ($vuelo['asientosTotales']??'Asientos no disponibles'); ?></p>
+                                            </div>
                                         </div>
-                                        <div class="btn-group" role="group" aria-label="Basic outlined example">
-                                            <a href="actions/desActivarVuelo.php?idVuelo=<?php echo $vuelo['idVuelo']; ?>" class="btn btn-outline-primary"  onclick="return confirm('Estás Seguro que desea cambiar el estado del Vuelo?' )" >
-                                                <?php if($vuelo['estadoVuelo']==1){
-                                                    echo 'Desactivar';
-                                                } else {
-                                                    echo 'Activar';
-                                                }
-                                                ?>
-                                            </a>
-                                            <a href="asignarHorario.php?idVuelo=<?php echo $vuelo['idVuelo']; ?>" class="btn btn-outline-primary">Asignar fecha</a>
-                                            <button type="button" class="btn btn-outline-danger">Eliminar</button>
-                                        </div>
-                                    </div>
+                                    </a>
                                 </div>
                             <?php endforeach; ?>
                         </div>
