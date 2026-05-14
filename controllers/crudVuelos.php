@@ -10,8 +10,8 @@ class CrudVuelos {
         $this->db = conectarDB();
     }
 
-    public function listarVuelos() {
-        $query = "SELECT v.*, a.* FROM vuelo v JOIN aerolinea a ON v.idAerolinea = a.idAerolinea";
+    public function listarVuelos($idAerolinea) {
+        $query = "SELECT v.*, a.* FROM vuelo v JOIN aerolinea a ON v.idAerolinea = a.idAerolinea WHERE a.idAerolinea = '$idAerolinea'";
         $resultado = mysqli_query($this->db, $query);
         return $resultado;
     }

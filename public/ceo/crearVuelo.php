@@ -1,6 +1,7 @@
 <?php
 define('BASE_PATH', __DIR__ . '/../../');
 
+
 require_once BASE_PATH . 'config/app.php';
 require_once BASE_PATH . 'controllers/CrudVuelos.php';
 require_once BASE_PATH . 'controllers/CrudAerolineas.php';
@@ -30,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (empty($err)) {
             $crud->crearVuelo($idAerolinea, $origen, $destino, $asientosTotales, $asientosDisponibles, $precio, $estado);
-            header('Location: vuelos.php?exito=Vuelo creado correctamente');
+            header('Location: dashboard.php?exito=Vuelo creado correctamente');
             exit();
         }
     }

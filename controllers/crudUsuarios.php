@@ -51,6 +51,12 @@ class CrudUsuarios {
         return mysqli_query($this->db, $query);
     }
 
+    public function cambiarContraseña($id, $pass) {
+        $pass = password_hash($pass, PASSWORD_DEFAULT);
+        $query = "UPDATE usuario SET password = $pass WHERE idUsuario = $id";
+        return mysqli_query($this->db, $query);
+    }
+
     //CEO
 
     public function crearCEO($usuario, $email, $telefono, $password, $token, $aerolinea) {
@@ -60,13 +66,19 @@ class CrudUsuarios {
     }
     
     public function obtenerCEOsEstado($estado) {
-        $query = "SELECT u.*, a.nombre FROM usuario u JOIN aerolinea a ON u.idAerolinea = a.idAerolinea WHERE u.rol = 'CEO' AND u.estadoUsuario = '$estado'";
+        $query = "SELECT u.*, a.nombre FROM usuario u JOIN aerolinea a ON u.idAerolinea = a.idAerolinea WHERE u.estadoUsuario = '$estado'";
         $resultado = mysqli_query($this->db, $query);
         return $resultado;
     }
 
-    public function obtenerCEO() {
+    public function listarCeo() {
         $query = "SELECT u.*, a.nombre FROM usuario u JOIN aerolinea a ON u.idAerolinea = a.idAerolinea WHERE u.estadoUsuario != 'pendiente' AND u.rol = 'CEO'";
+        $resultado = mysqli_query($this->db, $query);
+        return $resultado;
+    }
+
+    public function obtenerCEO($id) {
+        $query = "SELECT u.*, a.* FROM usuario u JOIN aerolinea a ON u.idAerolinea = a.idAerolinea WHERE u.idUsuario = '$id'";
         $resultado = mysqli_query($this->db, $query);
         return $resultado;
     }

@@ -5,7 +5,7 @@ require_once BASE_PATH . 'controllers/crudUsuarios.php';
 
 $crud = new CrudUsuarios();
 
-$resultado = $crud->obtenerCEO();
+$resultado = $crud->listarCeo();
 
 $usuarios = [];
 
