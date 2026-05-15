@@ -1,30 +1,23 @@
 <?php
 
-$crudUsuarios = new CrudUsuarios();
-$idUs = $_GET['idUsuario'];
 
-
-$resultado = $crudUsuarios->obtenerCEO($idUs);
-$usuario = mysqli_fetch_assoc($resultado);
-
-$error='';
-$exito='';
 
 if($_SERVER['REQUEST_METHOD']==='POST'){
     $contraseñaActual = $_POST['contraseñaActual'];
     $contraseñaNueva = $_POST['contraseñaNueva'];
     $contraseñaConfirm = $_POST['contraseñaConfirm'];
-    if (empty($passwordActual) || empty($passwordNueva) || empty($passwordConfirm)) {
+    if (empty($contraseñaActual) || empty($contraseñaNueva) || empty($contraseñaConfirm)) {
             $error = 'Todos los campos son obligatorios';
-        } else if (!password_verify($passwordActual, $usuario['claveUsuario'])) {
+        } else if (!password_verify($contraseñaActual, $usuario['password']??null)) {
             $error = 'La contraseña actual es incorrecta';
-        } else if (strlen($passwordNueva) >= 8) {
+        } else if (strlen($contraseñaNueva) >= 8) {
             $error = 'La contraseña debe tener menos de 8 caracteres';
-        } else if ($passwordNueva !== $passwordConfirm) {
+        } else if ($contraseñaNueva !== $contraseñaConfirm) {
             $error = 'Las contraseñas no coinciden';
         } else {
-            $crud = $crudUsuarios->cambiarContraseña($idUs, $contraseñaNueva);
+            $crud = $crudUsuarios->cambiarContraseña($idUs??null, $contraseñaNueva);
             $exito = 'Contraseña actualizada correctamente';    
+
         }
 }
 
@@ -43,23 +36,9 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
 <body>
     <div class=" bg-primary-subtle">
         <div class="container shadow-lg p-3 bg-body rounded">
-            <h3><i class="bi bi-person-fill"></i>Cambiar Contraseña</h3>
-
-            <?php if ($error): ?>
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    ❌ <?= htmlspecialchars($error) ?>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-            <?php endif; ?>
-
-            <?php if ($exito): ?>
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    ✅ <?= htmlspecialchars($exito) ?>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-            <?php endif; ?>
+            <h3><i class="bi bi-shield-lock"></i> Cambiar Contraseña</h3>
             <div class="row justify-content-start">
-                <form action="seguridad.php" method="POST">
+                <form action="" method="POST">
                     <div class="col-md-6 m-2">
                         <label class="form-label">Contraseña Actual</label>
                         <input type="password" class="form-control" name="contraseñaActual" required>

@@ -182,3 +182,50 @@
 }
 
 
+/* Card Aerolinea Perfil*/
+
+.fondoBlur {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  height: 300px;
+  background: linear-gradient(135deg, #1a3a5c 0%, #2a5f8f 100%);
+  z-index: 1;
+}
+
+
+
+.logo {
+  width: 200px;
+  height: 200px;
+}
+
+.infoAerolinea {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(26, 58, 92, 0.95), transparent);
+  padding: 30px;
+  text-align: center;
+  color: white;
+}
+
+.statusBadge {
+  display: inline-block; 
+  padding: 12px 24px; 
+  border-radius: 30px; 
+  font-weight: 600; 
+  font-size: 14px; 
+}
+
+.statusMessage {
+  margin-top: 15px; 
+  padding: 15px; 
+  border-radius: 8px; 
+  font-size: 14px; 
+  background: #f9f9f9; 
+  border-left: 4px solid #e8a020;
+}

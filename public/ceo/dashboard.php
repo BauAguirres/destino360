@@ -4,20 +4,33 @@ include '../../layouts/headerCEO.php';
 
 define('BASE_PATH', __DIR__ . '/../../');
 
-require_once BASE_PATH . 'controllers/CrudVuelos.php';
 require_once BASE_PATH . 'controllers/crudUsuarios.php';
+require_once BASE_PATH . 'controllers/crudVuelos.php';
 
 $crudVuelos = new CrudVuelos();
 $crudUsuarios = new CrudUsuarios();
 
 $idUs = $_GET['idUsuario'] ?? null;
-$usuario = $crudUsuarios->obtenerUsuario($idUs);
+$resultadoUs = $crudUsuarios->obtenerCEO($idUs);
+$usuario = mysqli_fetch_assoc($resultadoUs);
 
+$resultado = $crudVuelos->listarVuelos($usuario['idAerolinea']?? null);
 
+$vuelos = [];
 
+if ($resultado) {
+    while ($fila = mysqli_fetch_assoc($resultado)) {
+        $vuelos[] = $fila;
+    }
+}
 
+$error = '';
+$exito = '';
 
-
+ob_start();
+include 'seguridad.php';
+include 'vuelo.php';
+ob_clean()
 
 
 
@@ -27,13 +40,33 @@ $usuario = $crudUsuarios->obtenerUsuario($idUs);
 
     <main>
         <div class=" bg-primary-subtle py-3 my-3">
+                    <?php if ($error): ?>
+            <div class="container mb-3">
+                <div class="text-center alert alert-danger alert-dismissible fade show" role="alert">
+                    <?= htmlspecialchars($error) ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            </div>
+        <?php endif; ?>
+        
+        <?php if ($exito): ?>
+            <div class="container mb-3">
+                <div class="text-center alert alert-success alert-dismissible fade show" role="alert">
+                    <?= htmlspecialchars($exito) ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            </div>
+        <?php endif; ?>
             <div class="row container m-auto">
                 <div class="col-2 shadow-lg p-3 bg-body rounded">
                     <div class="nav nav-pills flex-column gap-3">
 
                         <strong class="mx-3">Bienvenido, <?php echo $usuario['nombreUsuario']; ?>!</strong>
-                        <button href="profileCeo.php?idUsuario=<?php echo $usuario['idUsuario']; ?>" class="btn btn-outline-primary active" data-bs-toggle="pill" data-bs-target="#perfil">Editar Perfil</button>
-                        <button href="vuelos.php?idUsuario=<?php echo $usuario['idUsuario']; ?>" class="btn btn-outline-primary" data-bs-toggle="pill" data-bs-target="#gestionVuelos">Gestionar Vuelos</button>
+                        <button href="profileCeo.php?idUsuario=<?php echo $usuario['idUsuario']; ?>" class="btn btn-outline-primary active" data-bs-toggle="pill" data-bs-target="#perfil">Informacion Personal</button>
+                        <button href="aerolinea.php?idUsuario=<?php echo $usuario['idUsuario']; ?>" class="btn btn-outline-primary" data-bs-toggle="pill" data-bs-target="#aerolinea">Mi Aerolinea</button>
+                        <?php if (($usuario['estadoUsuario']??null) == 'verificado') : ?>
+                            <button href="vuelos.php?idUsuario=<?php echo $usuario['idUsuario']; ?>" class="btn btn-outline-primary" data-bs-toggle="pill" data-bs-target="#gestionVuelos">Gestionar Vuelos</button>
+                        <?php endif ?>
                         <button href="seguridad.php?idUsuario=<?php echo $usuario['idUsuario']; ?>" class="btn btn-outline-primary" data-bs-toggle="pill" data-bs-target="#seguridad">Seguridad</button>
                         <button href="vuelos.php" class="btn btn-outline-primary" data-bs-toggle="pill" data-bs-target="#cerrarSesion">Cerrar Sesión</button>
 
@@ -43,6 +76,9 @@ $usuario = $crudUsuarios->obtenerUsuario($idUs);
                 <div class="col-10 tab-content">
                     <div class="tab-pane fade show active" id="perfil">
                         <?php include 'profileCeo.php'; ?>
+                    </div>
+                    <div class="tab-pane fade" id="aerolinea">
+                        <?php include 'aerolinea.php'; ?>
                     </div>
                     <div class="tab-pane fade" id="gestionVuelos">
                         <?php include 'vuelos.php'; ?>

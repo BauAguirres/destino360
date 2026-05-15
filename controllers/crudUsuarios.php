@@ -52,8 +52,8 @@ class CrudUsuarios {
     }
 
     public function cambiarContraseña($id, $pass) {
-        $pass = password_hash($pass, PASSWORD_DEFAULT);
-        $query = "UPDATE usuario SET password = $pass WHERE idUsuario = $id";
+        $passwordHash = password_hash($pass, PASSWORD_DEFAULT);
+        $query = "UPDATE usuario SET password = '$passwordHash' WHERE idUsuario = '$id'";
         return mysqli_query($this->db, $query);
     }
 
