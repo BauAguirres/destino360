@@ -7,7 +7,7 @@
                 <h3><i class="bi bi-sliders"></i> Administrar Vuelos</h3>
                 <div class="row align-items-center mx-auto">
                     <div class="col-md-12 d-flex justify-content-around m-auto ">
-                        <a href="crearVuelo.php" class="btn btn-primary">Crear Vuelo</a>
+                        <a href="crearVuelo.php?idUsuario=<?php $usuario['idUsuario'] ?? null ?>" class="btn btn-primary">Crear Vuelo</a>
                         <form class="d-flex" role="search">
                             <input class="form-control me-2" type="search" placeholder="Buscar vuelo" aria-label="Search">
                             <button class="btn btn-outline-success" type="submit">Buscar</button>
@@ -19,7 +19,7 @@
                             /** @var array $vuelos*/
                             foreach ($vuelos as $vuelo): ?>
                                 <div class="col-md-4 col-6 mb-4">
-                                    <a href="opcionesVuelo.php?idVuelo=<?= $vuelo['idVuelo'] ?>" class="text-decoration-none">
+                                    <a href="opcionesVuelo.php?idVuelo=<?php echo $vuelo['idVuelo'] ?>" class="text-decoration-none">
                                         <div class="card">
                                             <div class="card-body">
                                                 <h5 class="card-title">Destino: <?php echo ($vuelo['destino']??'Nombre no disponible'); ?></h5>

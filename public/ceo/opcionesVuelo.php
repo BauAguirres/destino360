@@ -1,17 +1,28 @@
 <?php
 define('BASE_PATH', __DIR__ . '/../../');
+session_start();
 
 require_once BASE_PATH . 'controllers/CrudVuelos.php';
+require_once BASE_PATH . 'controllers/CrudUsuarios.php';
 
-$crud = new CrudVuelos();
+$crudVuelos = new CrudVuelos();
+$crudUsuarios = new CrudUsuarios();
 
-$id = $_GET['idVuelo'] ?? null;
 $error = $_GET['error'] ?? null;
 $exito = $_GET['exito'] ?? null;
 
-$vuelo = $crud->obtenerVuelo($id);
+$idUsuario = $_SESSION['idUsuario'];
+$usuario = $crudUsuarios->obtenerCEO($idUsuario);
+$idAerolinea = $usuario['idAerolinea'];
 
+$idVuelo = $_GET['idVuelo'] ?? null;
+$vuelo = $crudVuelos->obtenerVuelo($idVuelo);
 
+// Verificás que el vuelo pertenezca a SU aerolínea
+if (!$vuelo || $vuelo['idAerolinea'] != $idAerolinea) {
+    header('Location: dashboard.php?error=No tenés permiso para ver este vuelo');
+    exit;
+}
 ?>
 
 

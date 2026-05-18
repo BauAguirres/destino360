@@ -19,13 +19,13 @@ if (empty($vuelo)) {
 } 
 if ($vuelo['estadoVuelo'] == 0) {
     $crud->eliminarVuelo($id);
-    header('Location: vuelos.php?exito=Vuelo eliminado correctamente');
+    header('Location: opcionesVuelo.php?exito=Vuelo eliminado correctamente');
     exit();
 } else if ($vuelo['estadoVuelo'] == 1) {
     $error = 'No se puede eliminar un vuelo activo. Desactívalo primero.';
-    header('Location: vuelos.php?error=' . urlencode($error));
+    header('Location: opcionesVuelo.php?error=' . urlencode($error));
     exit();
 }
 
-header('Location: vuelos.php?error=Vuelo no encontrado');
+header('Location: opcionesVuelo.php?error=Vuelo no encontrado');
 exit();

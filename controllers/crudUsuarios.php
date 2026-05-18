@@ -57,6 +57,12 @@ class CrudUsuarios {
         return mysqli_query($this->db, $query);
     }
 
+    public function obtenerEmail($email) {
+        $query = "SELECT * FROM usuario WHERE email = '$email'";
+        $resultado = mysqli_query($this->db, $query);
+        return mysqli_fetch_assoc($resultado);
+    }
+
     //CEO
 
     public function crearCEO($usuario, $email, $telefono, $password, $token, $aerolinea) {
@@ -80,7 +86,7 @@ class CrudUsuarios {
     public function obtenerCEO($id) {
         $query = "SELECT u.*, a.* FROM usuario u JOIN aerolinea a ON u.idAerolinea = a.idAerolinea WHERE u.idUsuario = '$id'";
         $resultado = mysqli_query($this->db, $query);
-        return $resultado;
+        return mysqli_fetch_assoc($resultado);
     }
 
     public function aprobarCEO($id) {

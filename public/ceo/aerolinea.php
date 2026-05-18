@@ -19,18 +19,6 @@ $exito = $_GET['exito'] ?? null;
     <div class="bg-primary-subtle">
         <div class="container shadow-lg p-3 bg-body rounded">
             <h3><i class="bi bi-airplane"></i> Mi Aerolinea</h3>
-            <?php if ($error): ?>
-                    <div class="alert alert-danger alert-dismissible fade show w-50 m-auto my-3" role="alert">
-                        <?php echo $error; ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-            <?php endif; ?>
-            <?php if ($exito): ?>
-                    <div class="alert alert-success alert-dismissible fade show w-50 m-auto my-3" role="alert">
-                        <?php echo $exito; ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-            <?php endif; ?>
             <div class="row justify-content-center m-4">
                 <div class="col-md-8">
                     <div class="card fondoBlur text-light">

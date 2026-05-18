@@ -1,21 +1,30 @@
 <?php
 define('BASE_PATH', __DIR__ . '/../../');
 
+session_start();
+
+if (!isset($_SESSION['idUsuario'])) {
+    header('Location: ../index.php?error=Debes iniciar sesion');
+    exit;
+}
+
+$idUsuario = $_SESSION['idUsuario'];
+
 
 require_once BASE_PATH . 'config/app.php';
-require_once BASE_PATH . 'controllers/CrudVuelos.php';
-require_once BASE_PATH . 'controllers/CrudAerolineas.php';
+require_once BASE_PATH . 'controllers/crudVuelos.php';
+require_once BASE_PATH . 'controllers/crudUsuarios.php';
 
 $crud = new crudVuelos();
 $err = '';
 $exito = '';
 
-$crudAerolineas = new CrudAerolineas();
-$aerolineas = $crudAerolineas->listarAerolineasActivas();
+$crudUsuarios = new CrudUsuarios();
+$usuario = $crudUsuarios->obtenerCEO($idUsuario);
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $idAerolinea = $_POST['idAerolinea'];
+    $idAerolinea = $usuario['idAerolinea'];
     $origen = $_POST['origen'];
     $destino = $_POST['destino'];
     $asientosTotales = $_POST['asientosTotales'];
@@ -89,17 +98,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>
                         <?php endif; ?>
-                        <div class="col-md-12 my-2">
-                            <label for="idAerolinea">Aerolinea</label>
-                            <div class="option">
-                                <select class="form-control" name="idAerolinea" id="idAerolinea" required>
-                                    <option value="">Seleccionar Aerolinea</option>
-                                    <?php foreach ($aerolineas as $aerolinea): ?>
-                                        <option value="<?= $aerolinea['idAerolinea'] ?>"><?= $aerolinea['nombre'] ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                        </div>
                         <div class="col-md-6 my-2">
                             <label for="origen">Origen</label>
                             <input type="text" class="form-control" name="origen" id="origen" required>

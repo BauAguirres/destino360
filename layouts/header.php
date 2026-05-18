@@ -40,14 +40,14 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="">
+                                        <form action="../public/login.php" method="POST">
                                             <div class="mb-3">
                                                 <label for="email" class="form-label">Correo Electrónico</label>
-                                                <input type="email" class="form-control" id="email" placeholder="Ingrese su correo electrónico">
+                                                <input type="email" class="form-control" name="email" id="email" placeholder="Ingrese su correo electrónico">
                                             </div>
                                             <div class="mb-3">
                                                 <label for="password" class="form-label">Contraseña</label>
-                                                <input type="password" class="form-control" id="password" placeholder="Ingrese su contraseña">
+                                                <input type="password" class="form-control" name="password" id="password" placeholder="Ingrese su contraseña">
                                             </div>
                                             <a href="#" class="text-decoration-none">
                                                 ¿Olvidaste tu contraseña?

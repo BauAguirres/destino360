@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (empty($err)) {
             $crud->asignarHorario($idVuelo, $fechaSalida, $horaSalida, $fechaLlegada, $horaLlegada);
             $exito = 'Horario asignado correctamente';
-            header('Location: vuelos.php?exito=' . urlencode($exito));
+            header('Location: dashboard.php?exito=' . urlencode($exito));
             exit();
         }
     }

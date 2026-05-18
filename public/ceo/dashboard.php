@@ -1,5 +1,15 @@
 <?php 
 
+session_start();
+
+if (!isset($_SESSION['idUsuario'])) {
+    header('Location: ../index.php?error=Debes iniciar sesion');
+    exit;
+}
+
+$idUsuario = $_SESSION['idUsuario'];
+$idAerolinea = $_SESSION['idAerolinea'];
+
 include '../../layouts/headerCEO.php';
 
 define('BASE_PATH', __DIR__ . '/../../');
@@ -10,11 +20,9 @@ require_once BASE_PATH . 'controllers/crudVuelos.php';
 $crudVuelos = new CrudVuelos();
 $crudUsuarios = new CrudUsuarios();
 
-$idUs = $_GET['idUsuario'] ?? null;
-$resultadoUs = $crudUsuarios->obtenerCEO($idUs);
-$usuario = mysqli_fetch_assoc($resultadoUs);
+$usuario = $crudUsuarios->obtenerCEO($idUsuario);
 
-$resultado = $crudVuelos->listarVuelos($usuario['idAerolinea']?? null);
+$resultado = $crudVuelos->listarVuelos($idAerolinea);
 
 $vuelos = [];
 
@@ -68,7 +76,7 @@ ob_clean()
                             <button href="vuelos.php?idUsuario=<?php echo $usuario['idUsuario']; ?>" class="btn btn-outline-primary" data-bs-toggle="pill" data-bs-target="#gestionVuelos">Gestionar Vuelos</button>
                         <?php endif ?>
                         <button href="seguridad.php?idUsuario=<?php echo $usuario['idUsuario']; ?>" class="btn btn-outline-primary" data-bs-toggle="pill" data-bs-target="#seguridad">Seguridad</button>
-                        <button href="vuelos.php" class="btn btn-outline-primary" data-bs-toggle="pill" data-bs-target="#cerrarSesion">Cerrar Sesión</button>
+                        <a href="../cerrarSesion.php" class="btn btn-outline-primary">Cerrar Sesión</a>
 
 
                     </div>
