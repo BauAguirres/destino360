@@ -29,4 +29,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         header('Location: ceo/dashboard.php');
         exit;
     }
+    
+    if($usuario['rol'] === 'admin') {
+        header('Location: admin/dashboard.php');
+        exit;
+    }
 }

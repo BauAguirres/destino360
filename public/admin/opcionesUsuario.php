@@ -2,32 +2,23 @@
 define('BASE_PATH', __DIR__ . '/../../');
 session_start();
 
-if (!isset($_SESSION['idUsuario'])) {
-    header('Location: ../index.php?error=Debes iniciar sesion');
-    exit;
-}
 
-require_once BASE_PATH . 'controllers/CrudVuelos.php';
 require_once BASE_PATH . 'controllers/CrudUsuarios.php';
 
-$crudVuelos = new CrudVuelos();
 $crudUsuarios = new CrudUsuarios();
 
 $error = $_GET['error'] ?? null;
 $exito = $_GET['exito'] ?? null;
 
-$idUsuario = $_SESSION['idUsuario'];
+$idUsuario = $_GET['idUsuario'];
 $usuario = $crudUsuarios->obtenerCEO($idUsuario);
+
 $idAerolinea = $usuario['idAerolinea'];
 
-$idVuelo = $_GET['idVuelo'] ?? null;
-$vuelo = $crudVuelos->obtenerVuelo($idVuelo);
 
-// Verificás que el vuelo pertenezca a SU aerolínea
-if (!$vuelo || $vuelo['idAerolinea'] != $idAerolinea) {
-    header('Location: dashboard.php?error=No tenés permiso para ver este vuelo');
-    exit;
-}
+
+
+
 ?>
 
 
@@ -49,7 +40,7 @@ if (!$vuelo || $vuelo['idAerolinea'] != $idAerolinea) {
             <div class="container">
                 <a class="navbar-brand" href="index.php">
                 <img src="../assets/img/logo.png" alt="Logo" width="30" height="24" class="d-inline-block align-text-center">
-                Destino360 - CEO
+                Destino360 - Admin
                 </a>
                 <div>
                     <button class="btn btn-outline-light">Cerrar Sesión</button>
@@ -64,7 +55,7 @@ if (!$vuelo || $vuelo['idAerolinea'] != $idAerolinea) {
         <div class=" bg-primary-subtle py-3">
             <div class="container shadow-lg p-3 mb-5 bg-body rounded">
                 <a href="dashboard.php" class="btn btn-outline-primary">< Volver</a>
-                <h1 class="text-center my-5">Administrar Vuelo</h1>
+                <h1 class="text-center my-5">Administrar Usuario</h1>
                 <div class="row">
                     <div class="col-md-12">
                         <?php if ($error): ?>
@@ -83,42 +74,52 @@ if (!$vuelo || $vuelo['idAerolinea'] != $idAerolinea) {
                     <div class="col-12 m-auto">
                         <div class="row m-auto justify-content-center align-items-center text-center">
                             <div class="col-md-12 mb-4">
-                                <h2><?php echo $vuelo['origen']; ?> - <?php echo $vuelo['destino']; ?></h2>
+                                <h2><?php echo $usuario['idUsuario']?> - <?php echo $usuario['nombreUsuario']; ?></h2>
                             </div>
                             <div class="col-md-3">
-                                <p><strong>Fecha de Salida:</strong> <?php echo ($vuelo['fechaSalida']??'Fecha de salida no disponible'); ?></p>
-                                <p><strong>Hora de Salida:</strong> <?php echo ($vuelo['horaSalida']??'Hora de salida no disponible'); ?></p>
+                                <p><strong>Email:</strong> <?php echo ($usuario['email']??'Email no disponible'); ?></p>
+                                <p><strong>Telefono:</strong> <?php echo ($usuario['telefono']??'Telefono no disponible'); ?></p>
                             </div>
                             <div class="col-md-3">
-                                <p><strong>Fecha de Llegada:</strong> <?php echo ($vuelo['fechaLlegada']??'Fecha de llegada no disponible'); ?></p>
-                                <p><strong>Hora de Llegada:</strong> <?php echo ($vuelo['horaLlegada']??'Hora de llegada no disponible'); ?></p>
+                                <p><strong>Aerolinea Asignada:</strong> <?php echo ($usuario['nombre']??'Aerolinea no disponibles'); ?></p>
+                                <p><strong>Fecha de Registro</strong> <?php echo date('d/m/Y', strtotime($usuario['creado']));?></p>
                             </div>
                             <div class="col-md-3">
-                                <p><strong>Asientos Totales:</strong> <?php echo ($vuelo['asientosTotales']??'Asientos totales no disponible'); ?></p>
-                                <p><strong>Asientos Disponibles:</strong> <?php echo ($vuelo['asientosDisp']??'Asientos disponibles no disponible'); ?></p>
+                                <p><strong>Vuelos Creados:</strong> <?php echo ($usuario['']??'Vuelos Creados no disponibles'); ?></p>
+                                <p><strong>Vuelos Habilitados:</strong> <?php echo ($usuario['']??'Sin Vuelos Habilitados'); ?></p>
                             </div>
                             <div class="col-md-12 d-flex justify-content-evenly align-items-center">
-                                <p><strong>Precio:</strong> <?php echo ($vuelo['precio']??'Precio no disponible'); ?></p>
                                 <p><strong>Estado:</strong> 
-                                    <?php if (($vuelo['estadoVuelo'] ?? 0) == 1): ?>
-                                        <span class="badge bg-success">Activa</span>
+                                    <?php if (($usuario['estadoUsuario'] ?? 'rechazado') == 'verificado'): ?>
+                                        <span class="badge bg-success">Verificado</span>
+                                    <?php elseif ($usuario['estadoUsuario'] == 'pendiente') : ?>
+                                        <span class="badge bg-warning">Pendiente</span>
+                                    <?php elseif ($usuario['estadoUsuario'] == 'deshabilitado') : ?>
+                                        <span class="badge bg-danger">Deshabilitado</span>
                                     <?php else: ?>
-                                        <span class="badge bg-danger">Inactiva</span>
+                                        <span class="badge bg-danger">Rechazado</span>
                                     <?php endif; ?>
                                 </p>
                             </div>
                             <div class="col-md-12">
                                 <div class="btn-group" role="group" aria-label="Basic outlined example">
-                                    <a href="actions/desActivarVuelo.php?idVuelo=<?php echo $vuelo['idVuelo']; ?>" class="btn btn-outline-primary"  onclick="return confirm('Estás Seguro que desea cambiar el estado del Vuelo?' )" >
-                                        <?php if($vuelo['estadoVuelo']==1){
-                                            echo 'Desactivar';
-                                        } else {
-                                            echo 'Activar';
-                                        }
-                                        ?>
-                                    </a>
-                                    <a href="asignarHorario.php?idVuelo=<?php echo $vuelo['idVuelo']; ?>" class="btn btn-outline-primary">Asignar fecha</a>
-                                    <a href="eliminarVuelo.php?idVuelo=<?php echo $vuelo['idVuelo']; ?>" class="btn btn-outline-danger" onclick="return confirm('Estás seguro que deseas eliminar este vuelo?')">Eliminar</a>
+                                    <?php if ($usuario['estadoUsuario'] == 'pendiente') : ?>
+                                        <a href="actions/cambiarEstadoCEO.php?idUsuario=<?=$usuario['idUsuario'] ?>&accion=verificar"  class="btn btn-outline-success"  onclick="return confirm('Estás Seguro que desea cambiar el estado del usuario?' )" >
+                                            Aprobar
+                                        </a>
+                                        <a href="actions/cambiarEstadoCEO.php?idUsuario=<?=$usuario['idUsuario'] ?>&accion=rechazar"  class="btn btn-outline-danger"  onclick="return confirm('Estás Seguro que desea cambiar el estado del usuario?' )" >
+                                            Rechazar
+                                        </a>
+                                    <?php elseif ($usuario['estadoUsuario'] != 'verificado') : ?>
+                                        <a href="actions/cambiarEstadoCEO.php?idUsuario=<?=$usuario['idUsuario']?>&accion=verificar" class="btn btn-outline-success"  onclick="return confirm('Estás Seguro que desea cambiar el estado del usuario?' )" >
+                                            Hablitar
+                                        </a>
+                                    <?php elseif ($usuario['estadoUsuario'] == 'verificado') : ?>
+                                        <a href="actions/cambiarEstadoCEO.php?idUsuario=<?=$usuario['idUsuario']?>&accion=deshabilitar" class="btn btn-outline-warning"  onclick="return confirm('Estás Seguro que desea cambiar el estado del usuario?' )" >
+                                            Deshabilitar
+                                        </a>
+                                    <?php endif; ?>
+                                    <a href="eliminarUsuario.php?idUsuario=<?php echo $usuario['idUsuario']; ?>" class="btn btn-outline-danger" onclick="return confirm('Estás seguro que deseas eliminar este vuelo?')">Eliminar</a>
                                 </div>
                             </div>
                         </div> 

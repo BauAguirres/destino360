@@ -39,20 +39,6 @@ $exito = $_GET['exito'] ?? null;
                             <button class="btn btn-outline-success" type="submit">Buscar</button>
                         </form>
                     </div>
-                    <div class="col-md-12">
-                        <?php if ($error): ?>
-                                <div class="alert alert-danger alert-dismissible fade show w-50 m-auto my-3" role="alert">
-                                    <?php echo $error; ?>
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                </div>
-                        <?php endif; ?>
-                        <?php if ($exito): ?>
-                                <div class="alert alert-success alert-dismissible fade show w-50 m-auto my-3" role="alert">
-                                    <?php echo $exito; ?>
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                </div>
-                        <?php endif; ?>
-                    </div>
                     <div class="col-12 m-auto my-4">
                         <div class="row m-auto">
                             <?php foreach ($aerolineas as $aerolinea): ?>

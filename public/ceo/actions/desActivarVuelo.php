@@ -4,6 +4,15 @@ define('BASE_PATH', __DIR__ . '/../../../');
 
 require_once BASE_PATH . 'controllers/CrudVuelos.php';
 
+session_start();
+
+if (!isset($_SESSION['idUsuario'])) {
+    header('Location: ../index.php?error=Debes iniciar sesion');
+    exit;
+}
+
+
+
 $crud = new CrudVuelos();
 
 $id = $_GET['idVuelo'] ?? null;

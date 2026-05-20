@@ -1,6 +1,13 @@
 <?php
 define('BASE_PATH', __DIR__ . '/../../');
 
+session_start();
+
+if (!isset($_SESSION['idUsuario'])) {
+    header('Location: ../index.php?error=Debes iniciar sesion');
+    exit;
+}
+
 require_once BASE_PATH . 'controllers/CrudUsuarios.php';
 
 $crud = new CrudUsuarios();
@@ -49,6 +56,7 @@ if ($resultado) {
     <main>
         <div class=" bg-primary-subtle py-3">
             <div class="container shadow-lg p-3 mb-5 bg-body rounded">
+                <a href="dashboard.php" class="btn btn-outline-primary">< Volver</a>
                 <h1 class="text-center">Administrar Usuarios</h1>
                 <div class="row">
                     <div class="col-md-6">
@@ -65,13 +73,7 @@ if ($resultado) {
                                     <div class="card" style="width: 18rem;">
                                         <?php include '../../layouts/usuario.php'; ?>
                                         <div class="card-footer">
-                                            <a href="actions/aprobarCEO.php?idUsuario=<?php echo $usuario['idUsuario']; ?>" class= "btn btn-success w-100 m-1" onclick="return confirm('Estás Seguro que desea aprobar este CEO')" >
-                                                Aprobar
-                                            </a>
-                                            <a href="actions/rechazarCEO.php?idUsuario=<?php echo $usuario['idUsuario']; ?>" class= "btn btn-danger w-100 m-1" onclick="return confirm('Estás Seguro que desea rechazar este CEO')" >
-                                                Rechazar
-                                            </a>
-                                        </div>
+                                            <a href="opcionesUsuario.php?idUsuario=<?php echo $usuario['idUsuario'] ?>" class="btn btn-primary d-block w-100">Detalles</a>
                                     </div>
                                 </div>
                             <?php endforeach; ?>

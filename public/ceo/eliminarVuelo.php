@@ -2,6 +2,13 @@
 
 define('BASE_PATH', __DIR__ . '/../../');
 
+session_start();
+
+if (!isset($_SESSION['idUsuario'])) {
+    header('Location: ../index.php?error=Debes iniciar sesion');
+    exit;
+}
+
 require_once BASE_PATH . 'controllers/CrudVuelos.php';
 
 $crud = new CrudVuelos();

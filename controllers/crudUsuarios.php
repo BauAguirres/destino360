@@ -47,7 +47,7 @@ class CrudUsuarios {
     }
 
     public function eliminarUsuario($id) {
-        $query = "DELETE FROM usuario WHERE id = '$id'";
+        $query = "DELETE FROM usuario WHERE idUsuario = '$id'";
         return mysqli_query($this->db, $query);
     }
 
@@ -89,13 +89,8 @@ class CrudUsuarios {
         return mysqli_fetch_assoc($resultado);
     }
 
-    public function aprobarCEO($id) {
-        $query = "UPDATE usuario SET estadoUsuario = 'verificado' WHERE idUsuario = '$id'";
-        return mysqli_query($this->db, $query);
-    }
-
-    public function rechazarCEO($id) {
-        $query = "UPDATE usuario SET estadoUsuario = 'rechazado' WHERE idUsuario = '$id'";
+    public function cambiarEstadoCEO($id, $estado) {
+        $query = "UPDATE usuario SET estadoUsuario = '$estado' WHERE idUsuario = '$id'";
         return mysqli_query($this->db, $query);
     }
 }

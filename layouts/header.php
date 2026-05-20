@@ -1,3 +1,20 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+$idUsuario = $_SESSION['idUsuario'] ?? '';
+$rol = $_SESSION['rol'] ?? '';
+
+if (!defined('BASE_PATH')) {
+    define('BASE_PATH', __DIR__ . '/../');
+}
+
+require_once BASE_PATH . 'config/app.php';
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -10,11 +27,13 @@
 </head>
 <body>
     
+    
+    
     <header>
         <nav class="navbar navbar-dark navbar-expand-lg bg-secondary">
             <div class="container">
-                <a href="#" class="navbar-brand">
-                    <img src="assets/img/logo.png" alt="Logo">
+                <a href="<?= BASE_URL ?>/public/index.php" class="navbar-brand">
+                    <img src="<?= BASE_URL ?>/public/assets/img/logo.png" alt="Logo">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -22,15 +41,20 @@
                 <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                    <a class="nav-link" href="../public/index.php">Inicio</a>
+                        <a class="nav-link" href="<?= BASE_URL ?>/public/index.php">Inicio</a>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link" href="../public/vuelos.php">Vuelos</a>
+                        <a class="nav-link" href="<?= BASE_URL ?>/public/vuelos.php">Vuelos</a>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link" href="../public/aerolineas.php">Aerolineas</a>
+                        <a class="nav-link" href="<?= BASE_URL ?>/public/aerolineas.php">Aerolineas</a>
                     </li>
                     <li class="nav-item">
+                        <?php if ($rol == 'CEO'): ?>
+                            <a class="nav-link" href="<?= BASE_URL ?>/public/ceo/dashboard.php">Dashboard</a>
+                        <?php elseif ($rol == 'admin') : ?>
+                            <a class="nav-link" href="<?= BASE_URL ?>/public/admin/dashboard.php">Dashboard</a>
+                        <?php else: ?>
                         <button class="btn nav-link" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Iniciar Sesión</button>
                         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -64,6 +88,7 @@
                                 </div>
                             </div>
                         </div>
+                        <?php endif; ?>
                     </li>
                 </ul>
                 </div>

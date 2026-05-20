@@ -14,6 +14,8 @@
         <span class="badge bg-success">Verificado</span>
       <?php elseif (($usuario['estadoUsuario'] ?? 'rechazado') == 'rechazado'): ?>
         <span class="badge bg-danger">Rechazado</span>
+      <?php elseif (($usuario['estadoUsuario'] ?? 'rechazado') == 'deshabilitado'): ?>
+        <span class="badge bg-danger">deshabilitido</span>
       <?php else: ?>
         <span class="badge bg-warning">Pendiente</span>
       <?php endif; ?>

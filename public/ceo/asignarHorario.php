@@ -1,6 +1,14 @@
 <?php
 define('BASE_PATH', __DIR__ . '/../../');
 
+session_start();
+
+if (!isset($_SESSION['idUsuario'])) {
+    header('Location: ../index.php?error=Debes iniciar sesion');
+    exit;
+}
+
+
 require_once BASE_PATH . 'config/app.php';
 require_once BASE_PATH . 'controllers/CrudVuelos.php';
 
@@ -74,6 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <main>
         <div class="bg-primary-subtle py-3">
             <div class="shadow-lg p-3 mb-5 bg-body rounded container">
+                <a href="opcionesVuelo.php?idVuelo=<?php echo $idVuelo ?>" class="btn btn-outline-primary">< Volver</a>
                 <div class="text-center">
                     <h1>Asignar Horario</h1>
                     <p>Completa los datos para asignar un horario al vuelo</p>

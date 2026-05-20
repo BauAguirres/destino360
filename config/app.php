@@ -1,5 +1,10 @@
 <?php 
 
+define('BASE_URL', 'http://localhost/entorno');
+
+
+
+
 function guardarLogo($file) {
     $extencionesPermitidas = ['jpg', 'jpeg', 'png'];
     $tamañoMaximo = 5 * 1024 * 1024; // 5MB

@@ -10,9 +10,8 @@ if (!isset($_SESSION['idUsuario'])) {
 $idUsuario = $_SESSION['idUsuario'];
 $idAerolinea = $_SESSION['idAerolinea'];
 
-include '../../layouts/headerCEO.php';
+include '../../layouts/header.php';
 
-define('BASE_PATH', __DIR__ . '/../../');
 
 require_once BASE_PATH . 'controllers/crudUsuarios.php';
 require_once BASE_PATH . 'controllers/crudVuelos.php';

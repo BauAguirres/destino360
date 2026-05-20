@@ -1,8 +1,16 @@
 <?php 
 
-include '../../layouts/headeradmin.php';
+session_start();
 
-define('BASE_PATH', __DIR__ . '/../../');
+if (!isset($_SESSION['idUsuario'])) {
+    header('Location: ../index.php?error=Debes iniciar sesion');
+    exit;
+}
+
+$idUsuario = $_SESSION['idUsuario'];
+
+include '../../layouts/header.php';
+
 
 
 require_once BASE_PATH . 'controllers/crudUsuarios.php';
@@ -11,8 +19,7 @@ require_once BASE_PATH . 'controllers/crudAerolineas.php';
 $crudAerolinea = new crudAerolineas();
 $crudUsuarios = new CrudUsuarios();
 
-$idUs = $_GET['idUsuario'] ?? null;
-$usuario = $crudUsuarios->obtenerUsuario($idUs);
+$usuario = $crudUsuarios->obtenerUsuario($idUsuario);
 
 
 
@@ -33,20 +40,25 @@ $usuario = $crudUsuarios->obtenerUsuario($idUs);
                     <div class="nav nav-pills flex-column gap-3">
 
                         <strong class="mx-3">Bienvenido, <?php echo $usuario['nombreUsuario']; ?>!</strong>
-                        <button href="opcionesUsuario.php?idUsuario=<?php echo $usuario['idUsuario']; ?>" class="btn btn-outline-primary " data-bs-toggle="pill" data-bs-target="#editarPerfil">Editar Perfil</button>
-                        <button href="aerolineas.php" class="btn btn-outline-primary active" data-bs-toggle="pill" data-bs-target="#gestionAerolineas">Gestionar Aerolineas</button>
-                        <button href="vuelos.php" class="btn btn-outline-primary" data-bs-toggle="pill" data-bs-target="#cerrarSesion">Cerrar Sesión</button>
+                        <button href="profileAdmin.php.php?idUsuario=<?php echo $usuario['idUsuario']; ?>" class="btn btn-outline-primary active" data-bs-toggle="pill" data-bs-target="#editarPerfil">Editar Perfil</button>
+                        <button href="aerolineas.php" class="btn btn-outline-primary" data-bs-toggle="pill" data-bs-target="#gestionAerolineas">Gestionar Aerolineas</button>
+                        <button href="usuarios.php" class="btn btn-outline-primary" data-bs-toggle="pill" data-bs-target="#usuarios">Gestionar CEOs</button>
+                        <a href="../cerrarSesion.php" class="btn btn-outline-primary">Cerrar Sesión</a>
 
 
                     </div>
                 </div>
                 <div class="col-10 tab-content">
-                        <div class="tab-pane fade fade show active" id="gestionAerolineas">
-                            <?php include 'aerolineas.php'; ?>
-                        </div>
-                        <div class="tab-pane fade fade " id="editarPerfil">
-                            <?php include '../profile.php'; ?>
-                        </div>
+                    <div class="tab-pane fade fade show active " id="editarPerfil">
+                        <?php include 'profileAdmin.php'; ?>
+                    </div>
+                    <div class="tab-pane fade fade" id="gestionAerolineas">
+                        <?php include 'aerolineas.php'; ?>
+                    </div>
+                    <div class="tab-pane fade fade" id="usuarios">
+                        <?php include 'usuarios.php'; ?>
+                    </div>
+                    
                 </div>
             </div>
 
