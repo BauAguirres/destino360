@@ -15,8 +15,9 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
         } else if ($contraseñaNueva !== $contraseñaConfirm) {
             $error = 'Las contraseñas no coinciden';
         } else {
-            $crud = $crudUsuarios->cambiarContraseña($idUs??null, $contraseñaNueva);
+            $crud = $crudUsuarios->cambiarContraseña($idUsuario??null, $contraseñaNueva);
             $exito = 'Contraseña actualizada correctamente';    
+
 
         }
 }
