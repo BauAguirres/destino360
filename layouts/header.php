@@ -54,6 +54,8 @@ require_once BASE_PATH . 'config/app.php';
                             <a class="nav-link" href="<?= BASE_URL ?>/public/ceo/dashboard.php">Dashboard</a>
                         <?php elseif ($rol == 'admin') : ?>
                             <a class="nav-link" href="<?= BASE_URL ?>/public/admin/dashboard.php">Dashboard</a>
+                        <?php elseif ($rol == 'user') : ?>
+                            <a class="nav-link" href="<?= BASE_URL ?>/public/user/profile.php">Mi Perfil</a>
                         <?php else: ?>
                         <button class="btn nav-link" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Iniciar Sesión</button>
                         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

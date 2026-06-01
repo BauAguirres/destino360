@@ -1,11 +1,6 @@
 <?php 
 
-session_start();
-
-if (!isset($_SESSION['idUsuario'])) {
-    header('Location: ../index.php?error=Debes iniciar sesion');
-    exit;
-}
+include_once '../../seguridad/seguridadAdmin.php';
 
 $idUsuario = $_SESSION['idUsuario'];
 
@@ -52,6 +47,7 @@ if ($resultadoPromociones) {
                         <button href="aerolineas.php" class="btn btn-outline-primary" data-bs-toggle="pill" data-bs-target="#gestionAerolineas">Gestionar Aerolineas</button>
                         <button href="promociones.php" class="btn btn-outline-primary" data-bs-toggle="pill" data-bs-target="#promociones">Gestionar Promociones</button>
                         <button href="usuarios.php" class="btn btn-outline-primary" data-bs-toggle="pill" data-bs-target="#usuarios">Gestionar CEOs</button>
+                        <button href="../seguridad.php" class="btn btn-outline-primary" data-bs-toggle="pill" data-bs-target="#seguridad">Seguridad</button>
                         <a href="../cerrarSesion.php" class="btn btn-outline-primary">Cerrar Sesión</a>
 
 
@@ -69,6 +65,9 @@ if ($resultadoPromociones) {
                     </div>
                     <div class="tab-pane fade" id="usuarios">
                         <?php include 'usuarios.php'; ?>
+                    </div>
+                    <div class="tab-pane fade" id="seguridad">
+                        <?php include '../seguridad.php'; ?>
                     </div>
                     
                 </div>

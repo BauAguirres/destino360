@@ -1,11 +1,6 @@
 <?php 
 
-session_start();
-
-if (!isset($_SESSION['idUsuario'])) {
-    header('Location: ../index.php?error=Debes iniciar sesion');
-    exit;
-}
+include_once '../../seguridad/seguridadCeo.php';
 
 $idUsuario = $_SESSION['idUsuario'];
 $idAerolinea = $_SESSION['idAerolinea'];
@@ -86,7 +81,7 @@ ob_clean()
                             <button href="vuelos.php?" class="btn btn-outline-primary" data-bs-toggle="pill" data-bs-target="#gestionVuelos">Gestionar Vuelos</button>
                         <?php endif ?>
                         <button href="promociones.php" class="btn btn-outline-primary" data-bs-toggle="pill" data-bs-target="#promciones">Gestionar Promociones</button>
-                        <button href="seguridad.php" class="btn btn-outline-primary" data-bs-toggle="pill" data-bs-target="#seguridad">Seguridad</button>
+                        <button href="../seguridad.php" class="btn btn-outline-primary" data-bs-toggle="pill" data-bs-target="#seguridad">Seguridad</button>
                         <a href="../cerrarSesion.php" class="btn btn-outline-primary">Cerrar Sesión</a>
 
 
@@ -106,7 +101,7 @@ ob_clean()
                         <?php include 'promociones.php'; ?>
                     </div>
                     <div class="tab-pane fade" id="seguridad">
-                        <?php include 'seguridad.php'; ?>
+                        <?php include '../seguridad.php'; ?>
                     </div>
                 </div>
             </div>

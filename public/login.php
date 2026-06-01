@@ -34,4 +34,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         header('Location: admin/dashboard.php');
         exit;
     }
+
+    if($usuario['rol'] === 'user') {
+        header('Location: user/profile.php');
+        exit;
+    }
 }

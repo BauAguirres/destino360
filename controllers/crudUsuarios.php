@@ -31,7 +31,7 @@ class CrudUsuarios {
 
     public function crearUsuario($usuario, $email, $telefono, $password, $token) {
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-        $query = "INSERT INTO usuario (nombreUsuario, email, telefono, password, tokenVerif, rol, estadoUsuario) VALUES ('$usuario', '$email', '$telefono', '$passwordHash', '$token', 'usuario', 'verificado')";
+        $query = "INSERT INTO usuario (nombreUsuario, email, telefono, password, tokenVerif, rol, estadoUsuario) VALUES ('$usuario', '$email', '$telefono', '$passwordHash', '$token', 'user', 'verificado')";
         return mysqli_query($this->db, $query);
     }
 

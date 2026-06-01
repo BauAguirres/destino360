@@ -16,11 +16,25 @@ class CrudVuelos {
         return $resultado;
     }
 
-    public function crearVuelo($idAerolinea, $origen, $destino, $asientosTotales, $asientosDisp, $precio, $estado) {
-        $query = "INSERT INTO vuelo (idAerolinea, origen, destino, asientosTotales, asientosDisp, precio, estadoVuelo) VALUES ('$idAerolinea', '$origen', '$destino', '$asientosTotales', '$asientosDisp', '$precio', '$estado')";
-        $resultado = mysqli_query($this->db, $query);
-        return $resultado;
+    public function crearVuelo($tipoVuelo, $idAerolinea, $origen, $destino, $asientosTotales, $asientosDisp, $precio, $estado, $idVueloRelacionado = null) {
+        $relacionadoSQL = $idVueloRelacionado ? $idVueloRelacionado : "NULL";
+        $query = "INSERT INTO vuelo (tipoVuelo, idAerolinea, origen, destino, asientosTotales, asientosDisp, precio, estadoVuelo, idVueloRelacionado) VALUES ('$tipoVuelo',$idAerolinea, '$origen', '$destino', $asientosTotales, $asientosDisp, $precio, '$estado', $relacionadoSQL)";
+        mysqli_query($this->db, $query);
+        return mysqli_insert_id($this->db);
     }
+
+    public function vincularVuelos($idIda, $idVuelta) {
+    $idIda = (int)$idIda;
+    $idVuelta = (int)$idVuelta;
+    
+    // Vincular ida → vuelta
+    $query1 = "UPDATE vuelo SET idVueloRelacionado = $idVuelta WHERE idVuelo = $idIda";
+    mysqli_query($this->db, $query1);
+    
+    // Vincular vuelta → ida
+    $query2 = "UPDATE vuelo SET idVueloRelacionado = $idIda WHERE idVuelo = $idVuelta";
+    mysqli_query($this->db, $query2);
+}
 
     public function eliminarVuelo($id) {
         $query = "DELETE FROM vuelo WHERE idVuelo = $id";
