@@ -58,9 +58,5 @@ if ($resultado) {
 </main>
 
 
-
-
-
-
 <?php include '../layouts/footer.php'; ?>
 
