@@ -27,11 +27,9 @@ class CrudVuelos {
     $idIda = (int)$idIda;
     $idVuelta = (int)$idVuelta;
     
-    // Vincular ida → vuelta
     $query1 = "UPDATE vuelo SET idVueloRelacionado = $idVuelta WHERE idVuelo = $idIda";
     mysqli_query($this->db, $query1);
     
-    // Vincular vuelta → ida
     $query2 = "UPDATE vuelo SET idVueloRelacionado = $idIda WHERE idVuelo = $idVuelta";
     mysqli_query($this->db, $query2);
 }
@@ -71,7 +69,7 @@ class CrudVuelos {
     }
 
     public function listarVuelosActivos() {
-        $query = "SELECT v.*, a.* FROM vuelo v JOIN aerolinea a ON v.idAerolinea = a.idAerolinea WHERE v.estadoVuelo = 1 and a.estadoAerolinea = 1";
+        $query = "SELECT v.*, a.* FROM vuelo v JOIN aerolinea a ON v.idAerolinea = a.idAerolinea WHERE v.estadoVuelo = 1 AND a.estadoAerolinea = 1 AND v.tipoVuelo != 'vuelta'";
         $resultado = mysqli_query($this->db, $query);
         return $resultado;
     }

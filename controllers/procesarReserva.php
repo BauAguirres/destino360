@@ -29,15 +29,18 @@ if (!$idVueloIda || $totalPasajeros == 0) {
     header('Location: ../public/vuelos.php?error=Datos inválidos');
     exit;
 }
+$precioTotal = $precio;
 
-$crudReservas->crearReserva($idUsuario, $idVueloIda, null, $cantidadMayores, $cantidadMenores, $precio);
 
 if(!empty($idVueloVuelta)){
     $vueloVuelta = $crudVuelos->obtenerVuelo($idVueloVuelta);
     $precio2 = $vueloVuelta['precio']*$totalPasajeros;
+    $precioTotal = $precio + $precio2;
 
-    $crudReservas->crearReserva($idUsuario, $idVueloVuelta, null, $cantidadMayores, $cantidadMenores, $precio2);
+    $crudReservas->crearReserva($idUsuario, $idVueloVuelta, null, $cantidadMayores, $cantidadMenores, $precioTotal);
 }
+
+$crudReservas->crearReserva($idUsuario, $idVueloIda, null, $cantidadMayores, $cantidadMenores, $precioTotal);
 
 header('Location: ../public/user/profile.php?exito=Reserva creada');
 exit;

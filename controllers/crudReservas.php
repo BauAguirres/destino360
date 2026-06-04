@@ -19,7 +19,7 @@ class CrudReservas {
 
 
     public function obtenerReservas($idUsuario) {
-        $query = "SELECT r.*, v.* FROM reserva r JOIN vuelo v ON v.idVuelo = r.idVuelo WHERE idUsuario = '$idUsuario'";
+        $query = "SELECT r.*, v.*, a.nombre AS nombre FROM reserva r JOIN vuelo v ON v.idVuelo = r.idVuelo JOIN aerolinea a ON a.idAerolinea = v.idAerolinea WHERE idUsuario = '$idUsuario'";
         return mysqli_query($this->db, $query);
         
     }

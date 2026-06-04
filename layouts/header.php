@@ -11,6 +11,7 @@ if (!defined('BASE_PATH')) {
 
 require_once BASE_PATH . 'config/app.php';
 
+
 ?>
 
 
@@ -90,6 +91,14 @@ require_once BASE_PATH . 'config/app.php';
                                 </div>
                             </div>
                         </div>
+                        <?php if (isset($_GET['login'])): ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var loginModal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+            loginModal.show();
+        });
+    </script>
+<?php endif; ?>
                         <?php endif; ?>
                     </li>
                 </ul>

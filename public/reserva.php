@@ -1,5 +1,19 @@
 <?php 
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (!defined('BASE_PATH')) {
+    define('BASE_PATH', __DIR__ . '/../');
+}
+require_once BASE_PATH . 'config/app.php';
+
+// Guard: va ANTES del include del header, porque acá todavía no se imprimió nada
+if (empty($_SESSION['idUsuario'])) {
+    header("Location: " . BASE_URL . "/public/index.php?login=1");
+    exit;
+}
 include '../layouts/header.php'; 
 
 $estadoLogin = !empty($_SESSION['idUsuario']);
@@ -14,6 +28,8 @@ $vueloIda = $crud->obtenerVuelo($idVuelo);
 $resultado = $crud->listarVuelosActivos();
 
 $vuelos = [];
+
+
 
 if ($resultado) {
     while ($fila = mysqli_fetch_assoc($resultado)) {
