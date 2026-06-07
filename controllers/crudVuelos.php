@@ -74,5 +74,26 @@ class CrudVuelos {
         return $resultado;
     }
 
+    public function listarVuelosVuelta($origen, $destino, $fechaSalida) {
+        $query = "SELECT v.*, a.* FROM vuelo v JOIN aerolinea a ON v.idAerolinea = a.idAerolinea WHERE v.estadoVuelo = 1 AND a.estadoAerolinea = 1 AND v.tipoVuelo = 'vuelta' AND v.idVueloRelacionado IS NULL AND v.origen = '$destino' AND v.destino = '$origen' AND v.fechaSalida >= '$fechaSalida'";
+        $resultado = mysqli_query($this->db, $query);
+        return $resultado;
+    }
 
+    public function decrementarAsientos($idVuelo, $cantidad) {
+        $query = "UPDATE vuelo SET asientosDisp = asientosDisp - $cantidad WHERE idVuelo = $idVuelo AND asientosDisp >= $cantidad";
+        mysqli_query($this->db, $query);
+    }
+
+public function contarVuelosPorEstado($idAerolinea) {
+    $idAerolinea = (int) $idAerolinea;
+    $query = "SELECT 
+                COUNT(*) AS total,
+                SUM(CASE WHEN estadoVuelo = 1 THEN 1 ELSE 0 END) AS activos,
+                SUM(CASE WHEN estadoVuelo = 0 THEN 1 ELSE 0 END) AS inactivos
+              FROM vuelo 
+              WHERE idAerolinea = $idAerolinea";
+    $resultado = mysqli_query($this->db, $query);
+    return mysqli_fetch_assoc($resultado);
+}
 }

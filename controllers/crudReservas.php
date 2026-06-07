@@ -24,6 +24,17 @@ class CrudReservas {
         
     }
 
-
+    public function contarReservasPorEstado($idAerolinea) {
+    $idAerolinea = (int) $idAerolinea;
+    $query = "SELECT 
+                COUNT(*) AS total,
+                SUM(CASE WHEN r.estadoReserva = 'pendiente de pago' THEN 1 ELSE 0 END) AS pendientes,
+                SUM(CASE WHEN r.estadoReserva = 'confirmada' THEN 1 ELSE 0 END) AS confirmadas
+              FROM reserva r
+              JOIN vuelo v ON r.idVuelo = v.idVuelo
+              WHERE v.idAerolinea = $idAerolinea";
+    $resultado = mysqli_query($this->db, $query);
+    return mysqli_fetch_assoc($resultado);
+    }
 
 }

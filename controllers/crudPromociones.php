@@ -43,4 +43,19 @@ class CrudPromociones {
         $query = "UPDATE promocion SET estadoPromo = '$estado' WHERE idPromo = '$id'";
         return mysqli_query($this->db, $query);
     }
+
+    public function contarPromocionesPendientes($idAerolinea) {
+        $idAerolinea = (int) $idAerolinea;
+        $query = "SELECT COUNT(*) AS total FROM promocion 
+                WHERE idAerolinea = $idAerolinea AND estadoPromo = 'pendiente'";
+        $resultado = mysqli_query($this->db, $query);
+        $fila = mysqli_fetch_assoc($resultado);
+        return $fila['total'] ?? 0;
+    }
+
+    public function contarPendientesGlobal() {
+        $query = "SELECT COUNT(*) AS total FROM promocion WHERE estadoPromo = 'pendiente'";
+        $fila = mysqli_fetch_assoc(mysqli_query($this->db, $query));
+        return $fila['total'] ?? 0;
+    }
 }

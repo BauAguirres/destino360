@@ -93,4 +93,17 @@ class CrudUsuarios {
         $query = "UPDATE usuario SET estadoUsuario = '$estado' WHERE idUsuario = '$id'";
         return mysqli_query($this->db, $query);
     }
+
+
+    public function contarUsuarios() {
+    $query = "SELECT COUNT(*) AS total FROM usuario";
+    $fila = mysqli_fetch_assoc(mysqli_query($this->db, $query));
+    return $fila['total'] ?? 0;
+    }
+
+    public function contarCeosPendientes() {
+        $query = "SELECT COUNT(*) AS total FROM usuario WHERE rol = 'CEO' AND estadoUsuario = 'pendiente'";
+        $fila = mysqli_fetch_assoc(mysqli_query($this->db, $query));
+        return $fila['total'] ?? 0;
+    }
 }

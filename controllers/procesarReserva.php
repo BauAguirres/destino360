@@ -31,16 +31,34 @@ if (!$idVueloIda || $totalPasajeros == 0) {
 }
 $precioTotal = $precio;
 
+if ($vueloIda['asientosDisp'] < $totalPasajeros) {
+    header('Location: ../public/vuelo.php?idVuelo=' . $idVueloIda . '&error=No hay asientos suficientes');
+    exit;
+}
 
 if(!empty($idVueloVuelta)){
     $vueloVuelta = $crudVuelos->obtenerVuelo($idVueloVuelta);
+
+    if (!$vueloVuelta) {
+        header('Location: ../public/vuelo.php?idVuelo=' . $idVueloIda . '&error=Vuelo de vuelta no encontrado');
+        exit;
+    }
+
+    if ($vueloVuelta['asientosDisp'] < $totalPasajeros) {
+        header('Location: ../public/vuelo.php?idVuelo=' . $idVueloIda . '&error=No hay asientos suficientes en la vuelta');
+        exit;
+    }
+
+
     $precio2 = $vueloVuelta['precio']*$totalPasajeros;
     $precioTotal = $precio + $precio2;
 
     $crudReservas->crearReserva($idUsuario, $idVueloVuelta, null, $cantidadMayores, $cantidadMenores, $precioTotal);
+    $crudVuelos->decrementarAsientos($idVueloVuelta, $totalPasajeros);
 }
 
 $crudReservas->crearReserva($idUsuario, $idVueloIda, null, $cantidadMayores, $cantidadMenores, $precioTotal);
+$crudVuelos->decrementarAsientos($idVueloIda, $totalPasajeros);
 
 header('Location: ../public/user/profile.php?exito=Reserva creada');
 exit;

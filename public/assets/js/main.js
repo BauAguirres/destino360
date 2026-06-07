@@ -40,11 +40,11 @@ function cambiarOpcionVuelta() {
 
 
 // RESERVAS
-let precioIda = parseFloat(
-    document.getElementById('precioIda')
-    .innerText
-    .replace('$', '')
-);
+let precioIda = 0;
+const elPrecioIda = document.getElementById('precioIda');
+if (elPrecioIda) {
+    precioIda = parseFloat(elPrecioIda.innerText.replace('$', ''));
+}
 
 let precioVuelta = 0;
 
@@ -102,7 +102,7 @@ function confirmarVueloVuelta(){
                     </div>
                     <div class="col-md-4">
                         <small class="text-muted">PRECIO</small>
-                        <p class="fw-bold fs-5">$${precioVuelta}</p>
+                        <p class="fw-bold fs-5 text-success">$${precioVuelta}</p>
                     </div>
                 </div>
                 
@@ -153,6 +153,11 @@ function actualizarPrecioTotal(){
 
     const menores = parseInt(document.getElementById('cantidadMenores').value) || 0;
 
+    const elPrecioVuelta = document.getElementById('precioVuelta');
+    if (elPrecioVuelta && elPrecioVuelta.dataset.precio) {
+        precioVuelta = parseFloat(elPrecioVuelta.dataset.precio);
+    }
+
     const totalPasajeros = mayores + menores;
 
     const totalVuelos = Number(precioIda) + Number(precioVuelta);
@@ -167,5 +172,3 @@ document.getElementById('cantidadMayores')
 
 document.getElementById('cantidadMenores')
     .addEventListener('change', actualizarPrecioTotal);
-
-

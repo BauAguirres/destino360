@@ -54,22 +54,29 @@ if ($resultado) {
                                         <div class="card-body d-flex flex-column">
 
                                             <div class="d-flex align-items-center gap-2 mb-3">
-                                                <img src="assets/img/logosAerolineas/<?php echo htmlspecialchars($vuelo['urlLogo'] ?? 'default-logo.png'); ?>"
-                                                     alt="Logo <?php echo htmlspecialchars($vuelo['nombre'] ?? ''); ?>"
+                                                <img src="assets/img/logosAerolineas/<?php echo $vuelo['urlLogo'] ?? 'default-logo.png'; ?>"
+                                                     alt="Logo <?php echo $vuelo['nombre'] ?? ''; ?>"
                                                      style="max-height: 35px; max-width: 60px; object-fit: contain;">
                                                 <small class="text-muted fw-semibold">
-                                                    <?php echo htmlspecialchars($vuelo['nombre'] ?? ''); ?>
+                                                    <?php echo $vuelo['nombre'] ?? ''; ?>
                                                 </small>
+                                                <p class="text-muted small mb-0 ms-auto">
+                                                    <?php if ($vuelo['tipoVuelo'] === 'idaSolo'): ?>
+                                                        Solo ida
+                                                    <?php elseif ($vuelo['tipoVuelo'] === 'idaVuelta'): ?>
+                                                        Ida y vuelta
+                                                    <?php endif; ?>
+                                                </p>
                                             </div>
 
                                             <div class="d-flex align-items-center justify-content-between mb-3">
                                                 <div class="text-center">
-                                                    <div class="fw-bold fs-5"><?php echo htmlspecialchars($vuelo['origen'] ?? ''); ?></div>
+                                                    <div class="fw-bold fs-5"><?php echo $vuelo['origen'] ?? ''; ?></div>
                                                     <small class="text-muted">Origen</small>
                                                 </div>
                                                 <i class="bi bi-arrow-right text-primary mx-2"></i>
                                                 <div class="text-center">
-                                                    <div class="fw-bold fs-5"><?php echo htmlspecialchars($vuelo['destino'] ?? ''); ?></div>
+                                                    <div class="fw-bold fs-5"><?php echo $vuelo['destino'] ?? ''; ?></div>
                                                     <small class="text-muted">Destino</small>
                                                 </div>
                                             </div>
@@ -77,12 +84,12 @@ if ($resultado) {
                                             <ul class="list-unstyled small mb-3 flex-grow-1">
                                                 <li class="mb-1">
                                                     <i class="bi bi-calendar-event"></i>
-                                                    <?php echo htmlspecialchars($vuelo['fechaSalida'] ?? ''); ?>
-                                                    a las <?php echo htmlspecialchars($vuelo['horaSalida'] ?? ''); ?> hs
+                                                    <?php echo $vuelo['fechaSalida'] ?? ''; ?>
+                                                    a las <?php echo $vuelo['horaSalida'] ?? ''; ?> hs
                                                 </li>
                                                 <li class="mb-1">
                                                     <i class="bi bi-people"></i>
-                                                    Asientos disponibles: <?php echo htmlspecialchars($vuelo['asientosDisponibles'] ?? '0'); ?>
+                                                    Asientos disponibles: <?php echo $vuelo['asientosDisp'] ?? '0'; ?>
                                                 </li>
                                             </ul>
 
@@ -90,10 +97,16 @@ if ($resultado) {
                                                 <span class="fw-bold fs-5 text-success">
                                                     $<?php echo number_format((float) ($vuelo['precio'] ?? 0), 2, ',', '.'); ?>
                                                 </span>
-                                                <a href="<?php echo BASE_URL; ?>/public/reserva.php?idVuelo=<?php echo $vuelo['idVuelo'] ?? ''; ?>"
-                                                   class="btn btn-primary btn-sm">
-                                                    <i class="bi bi-bookmark-plus"></i> Reservar
-                                                </a>
+                                                <div class="btn-group" role="group">
+                                                    <a href="<?php echo BASE_URL; ?>/public/detallesVuelo.php?idVuelo=<?php echo $vuelo['idVuelo'] ?? ''; ?>"
+                                                       class="btn btn-outline-primary btn-sm">
+                                                        <i class="bi bi-info-circle"></i> Detalles
+                                                    </a>
+                                                    <a href="<?php echo BASE_URL; ?>/public/reserva.php?idVuelo=<?php echo $vuelo['idVuelo'] ?? ''; ?>"
+                                                       class="btn btn-primary btn-sm">
+                                                        <i class="bi bi-bookmark-plus"></i> Reservar
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

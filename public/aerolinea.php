@@ -40,7 +40,7 @@ if ($resultadoVuelos) {
         <div class="container shadow-lg p-3 mb-5 bg-body rounded">
 
             <!-- Botón volver -->
-            <a href="<?php echo BASE_URL; ?>public/aerolineas.php" class="btn btn-link text-decoration-none mt-2">
+            <a href="<?php echo BASE_URL; ?>/public/aerolineas.php" class="btn btn-outline-primary mt-2">
                 <i class="bi bi-arrow-left"></i> Volver a aerolíneas
             </a>
 
@@ -49,24 +49,24 @@ if ($resultadoVuelos) {
                 <div class="d-flex justify-content-center">
                     <div class="rounded-circle bg-white shadow-lg d-flex align-items-center justify-content-center overflow-hidden border border-3 border-white"
                         style="width: 120px; height: 120px;">
-                        <img src="assets/img/logosAerolineas/<?php echo htmlspecialchars($aerolinea['urlLogo'] ?? 'default-logo.png'); ?>"
-                            alt="Logo <?php echo htmlspecialchars($aerolinea['nombre'] ?? ''); ?>"
+                        <img src="assets/img/logosAerolineas/<?php echo $aerolinea['urlLogo'] ?? 'default-logo.png'; ?>"
+                            alt="Logo <?php echo $aerolinea['nombre'] ?? ''; ?>"
                             style="max-width: 80%; max-height: 80%; object-fit: contain;">
                     </div>
                 </div>
 
                 <h1 class="fw-bold mt-3 mb-1">
-                    <?php echo htmlspecialchars($aerolinea['nombre'] ?? 'Aerolínea'); ?>
+                    <?php echo $aerolinea['nombre'] ?? 'Aerolínea'; ?>
                 </h1>
 
-                <?php if (!empty($aerolinea['codigoIATA'])): ?>
+                <?php if (!empty($aerolinea['codIATA'])): ?>
                     <span class="badge bg-primary-subtle text-primary border border-primary-subtle fs-6">
-                        <?php echo htmlspecialchars($aerolinea['codigoIATA']); ?>
+                        <?php echo $aerolinea['codIATA']; ?>
                     </span>
                 <?php endif; ?>
 
                 <p class="text-muted mt-3 mx-auto" style="max-width: 600px;">
-                    <?php echo htmlspecialchars($aerolinea['descripcion'] ?? 'Descripción no disponible'); ?>
+                    <?php echo $aerolinea['descripcion'] ?? 'Descripción no disponible'; ?>
                 </p>
             </div>
 

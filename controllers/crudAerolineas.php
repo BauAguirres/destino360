@@ -45,5 +45,10 @@ class CrudAerolineas {
         return mysqli_query($this->db, $query);
     }
 
-    
+    public function contarAerolineas() {
+    $query = "SELECT COUNT(*) AS total FROM aerolinea";
+    $fila = mysqli_fetch_assoc(mysqli_query($this->db, $query));
+    return $fila['total'] ?? 0;
+    }
+
 }

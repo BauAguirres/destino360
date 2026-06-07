@@ -129,6 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <option value="">-- Selecciona --</option>
                                     <option value="idaSolo">Vuelo de IDA solamente</option>
                                     <option value="idaVuelta">Vuelo de IDA + VUELTA</option>
+                                    <option value="vuelta">Vuelo de VUELTA solamente</option>
                                 </select>
                         </div>
                         <div class="col-md-6 my-2">
@@ -199,8 +200,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </div>
                             </div>
                         </div>
-
-                        <p>Precio Total: <?php  ?></p>
                         <button type="submit" class="my-4 btn btn-primary">Crear Vuelo</button>
                     
                 </form>

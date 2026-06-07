@@ -3,7 +3,7 @@
         <nav class="navbar navbar-dark navbar-expand-lg bg-secondary">
             <div class="container">
                 <a href="#" class="navbar-brand">
-                    <img src="assets/img/logo.png" alt="Logo">
+                    <img src="<?= BASE_URL ?>/public/assets/img/logo.png" alt="Logo">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -30,6 +30,6 @@
 
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script src="<?= BASE_URL ?>/public/assets/js/main.js"></script>
 </body>
 </html>
