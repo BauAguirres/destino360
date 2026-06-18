@@ -4,8 +4,6 @@ function abrirMenuPas() {
 
 
 
-// CRUDvUELOS
-
 function cambiarTipoViaje() {
     const tipoVuelo = document.getElementById('tipoVuelo').value;
     const seccionVuelta = document.getElementById('seccionVuelta');
@@ -33,20 +31,18 @@ function cambiarOpcionVuelta() {
 
 
 
-
-
-
-
-
-
-// RESERVAS
 let precioIda = 0;
+let precioVuelta = 0;
+
 const elPrecioIda = document.getElementById('precioIda');
-if (elPrecioIda) {
-    precioIda = parseFloat(elPrecioIda.innerText.replace('$', ''));
+if (elPrecioIda && elPrecioIda.dataset.precio) {
+    precioIda = parseFloat(elPrecioIda.dataset.precio);
 }
 
-let precioVuelta = 0;
+const elPrecioVueltaInicial = document.getElementById('precioVuelta');
+if (elPrecioVueltaInicial && elPrecioVueltaInicial.dataset.precio) {
+    precioVuelta = parseFloat(elPrecioVueltaInicial.dataset.precio);
+}
 
 function confirmarVueloVuelta(){
 
@@ -64,7 +60,6 @@ function confirmarVueloVuelta(){
     const horaSalida = select.getAttribute('data-hora-salida');
     precioVuelta = parseFloat(select.getAttribute('data-precio'));
 
-    // Guardar ID en input hidden
     document.getElementById('idVueloVuelta').value = idVueloVuelta;
 
     const contenedor = document.getElementById('vueloVueltaSeleccionado');
@@ -115,29 +110,22 @@ function confirmarVueloVuelta(){
 
     actualizarPrecioTotal();
 
-    // Deshabilitar botón de agregar
     document.getElementById('btnAgregarVuelta').disabled = true;
     document.getElementById('btnAgregarVuelta').classList.add('disabled');
     document.getElementById('btnAgregarVuelta').style.display = 'none';
 
-    // Cerrar modal
     const modal = bootstrap.Modal.getInstance(document.getElementById('modalVuelta'));
     modal.hide();
-
-    
 }
 
 function eliminarVueloVuelta() {
-    // Limpiar el vuelo de vuelta
     document.getElementById('idVueloVuelta').value = '';
     document.getElementById('vueloVueltaSeleccionado').innerHTML = '';
 
-    // Habilitar botón de agregar
     document.getElementById('btnAgregarVuelta').disabled = false;
     document.getElementById('btnAgregarVuelta').classList.remove('disabled');
     document.getElementById('btnAgregarVuelta').style.display = 'block';
 
-    // Desmarcar radio buttons
     document.querySelectorAll('input[name="vueloVuelta"]').forEach(input => {
         input.checked = false;
     });
@@ -150,13 +138,7 @@ function eliminarVueloVuelta() {
 function actualizarPrecioTotal(){
 
     const mayores = parseInt(document.getElementById('cantidadMayores').value) || 0;
-
     const menores = parseInt(document.getElementById('cantidadMenores').value) || 0;
-
-    const elPrecioVuelta = document.getElementById('precioVuelta');
-    if (elPrecioVuelta && elPrecioVuelta.dataset.precio) {
-        precioVuelta = parseFloat(elPrecioVuelta.dataset.precio);
-    }
 
     const totalPasajeros = mayores + menores;
 
@@ -164,7 +146,7 @@ function actualizarPrecioTotal(){
 
     const total = totalPasajeros * totalVuelos;
 
-    document.getElementById('precioTotal').innerText = '$' + total;
+    document.getElementById('precioTotal').innerText = '$' + total.toFixed(2);
 }
 
 document.getElementById('cantidadMayores')

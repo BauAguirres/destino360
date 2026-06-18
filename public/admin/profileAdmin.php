@@ -8,13 +8,6 @@ $exito = $_GET['exito'] ?? null;
 ?>
 
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
 <body>
     <div class="bg-primary-subtle">
         <div class="container shadow-lg p-3 bg-body rounded">
@@ -36,6 +29,5 @@ $exito = $_GET['exito'] ?? null;
         </div>
     </div>
 </body>
-</html>
 
 

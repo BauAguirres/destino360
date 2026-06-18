@@ -22,7 +22,6 @@ if ($resultado) {
     }
 }
 
-// Conteos rápidos para el resumen
 $totalReservas = count($reservas);
 $confirmadas = 0;
 $pendientes = 0;
@@ -60,7 +59,6 @@ $exito = $_GET['exito'] ?? '';
                 <div class="col-md-9 col-lg-10">
                     <div class="shadow-lg p-4 bg-body rounded">
 
-                        <!-- Saludo / perfil rápido -->
                         <div class="d-flex align-items-center gap-3 mb-5">
                             <div class="bg-primary-subtle rounded-circle d-flex align-items-center justify-content-center"
                                  style="width: 70px; height: 70px;">
@@ -74,7 +72,6 @@ $exito = $_GET['exito'] ?? '';
                             </div>
                         </div>
 
-                        <!-- Resumen de reservas -->
                         <h3 class="mb-4"><i class="bi bi-bookmark-check"></i> Mis Reservas</h3>
                         <div class="row g-3 mb-5">
                             <div class="col-md-4">
@@ -100,7 +97,6 @@ $exito = $_GET['exito'] ?? '';
                             </div>
                         </div>
 
-                        <!-- Accesos rápidos -->
                         <h3 class="mb-4"><i class="bi bi-lightning-charge"></i> Accesos rápidos</h3>
                         <div class="row g-3">
                             <div class="col-md-4">
@@ -116,7 +112,7 @@ $exito = $_GET['exito'] ?? '';
                                 </a>
                             </div>
                             <div class="col-md-4">
-                                <a href="profileUser.php" class="btn btn-outline-success w-100 py-4 rounded-4">
+                                <a href="<?= BASE_URL ?>/public/perfil.php" class="btn btn-outline-success w-100 py-4 rounded-4">
                                     <i class="bi bi-person fs-3 d-block mb-2"></i>
                                     Mi perfil
                                 </a>
@@ -132,6 +128,5 @@ $exito = $_GET['exito'] ?? '';
 </main>
 
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <?php include '../../layouts/footer.php'; ?>

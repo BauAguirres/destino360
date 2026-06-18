@@ -7,8 +7,12 @@ $estadoLogin = !empty($_SESSION['idUsuario']);
 
 
 require_once '../controllers/crudVuelos.php';
+require_once '../controllers/crudPromociones.php';
 
 $crud = new CrudVuelos();
+$crudPromociones = new CrudPromociones();
+
+
 $resultado = $crud->listarVuelosActivos();
 
 $vuelos = [];
@@ -18,6 +22,7 @@ if ($resultado) {
         $vuelos[] = $fila;
     }
 }
+
 
 
 
@@ -49,14 +54,24 @@ if ($resultado) {
                             </div>
                         <?php else: ?>
                             <?php foreach ($vuelos as $vuelo): ?>
+                                <?php 
+                                    $promocion = $crudPromociones->obtenerPromocionVuelos($vuelo['idVuelo']);
+                                    $precioOriginal = $vuelo['precio'] ?? 0;
+                                    $precioFinal = $precioOriginal;
+
+                                    if (!empty($promocion)) {
+                                        $descuento = $promocion['porcDesc'] ?? 0;
+                                        $precioFinal = $precioOriginal - ($precioOriginal * ($descuento / 100));
+                                    }
+                                ?>
                                 <div class="col-lg-4 col-md-6">
                                     <div class="card h-100 shadow-sm border-0 rounded-4">
                                         <div class="card-body d-flex flex-column">
 
                                             <div class="d-flex align-items-center gap-2 mb-3">
                                                 <img src="assets/img/logosAerolineas/<?php echo $vuelo['urlLogo'] ?? 'default-logo.png'; ?>"
-                                                     alt="Logo <?php echo $vuelo['nombre'] ?? ''; ?>"
-                                                     style="max-height: 35px; max-width: 60px; object-fit: contain;">
+                                                    alt="Logo <?php echo $vuelo['nombre'] ?? ''; ?>"
+                                                    style="max-height: 35px; max-width: 60px; object-fit: contain;">
                                                 <small class="text-muted fw-semibold">
                                                     <?php echo $vuelo['nombre'] ?? ''; ?>
                                                 </small>
@@ -91,19 +106,33 @@ if ($resultado) {
                                                     <i class="bi bi-people"></i>
                                                     Asientos disponibles: <?php echo $vuelo['asientosDisp'] ?? '0'; ?>
                                                 </li>
+                                                <?php if (!empty($promocion)): ?>
+                                                    <li class="mb-1">
+                                                        <span class="badge bg-success">
+                                                            <i class="bi bi-tag-fill"></i> <?php echo $promocion['porcDesc']; ?>% OFF - <?php echo htmlspecialchars($promocion['nombrePromo']); ?>
+                                                        </span>
+                                                    </li>
+                                                <?php endif; ?>
                                             </ul>
 
                                             <div class="d-flex justify-content-between align-items-center mt-auto">
                                                 <span class="fw-bold fs-5 text-success">
-                                                    $<?php echo number_format((float) ($vuelo['precio'] ?? 0), 2, ',', '.'); ?>
+                                                    <?php if (!empty($promocion)): ?>
+                                                        $<?php echo number_format((float) $precioFinal, 2, ',', '.'); ?>
+                                                        <small class="text-muted text-decoration-line-through ms-2">
+                                                            $<?php echo number_format((float) $precioOriginal, 2, ',', '.'); ?>
+                                                        </small>
+                                                    <?php else: ?>
+                                                        $<?php echo number_format((float) $precioOriginal, 2, ',', '.'); ?>
+                                                    <?php endif; ?>
                                                 </span>
                                                 <div class="btn-group" role="group">
                                                     <a href="<?php echo BASE_URL; ?>/public/detallesVuelo.php?idVuelo=<?php echo $vuelo['idVuelo'] ?? ''; ?>"
-                                                       class="btn btn-outline-primary btn-sm">
+                                                    class="btn btn-outline-primary btn-sm">
                                                         <i class="bi bi-info-circle"></i> Detalles
                                                     </a>
                                                     <a href="<?php echo BASE_URL; ?>/public/reserva.php?idVuelo=<?php echo $vuelo['idVuelo'] ?? ''; ?>"
-                                                       class="btn btn-primary btn-sm">
+                                                    class="btn btn-primary btn-sm">
                                                         <i class="bi bi-bookmark-plus"></i> Reservar
                                                     </a>
                                                 </div>

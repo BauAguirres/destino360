@@ -15,6 +15,35 @@ class CrudPromociones {
         return mysqli_query($this->db, $query);
     }
 
+    public function vincularPromocionVuelo($idPromo, $idVuelo) {
+        $query = "INSERT INTO promoxvuelo (idPromo, idVuelo) VALUES ('$idPromo', '$idVuelo')";
+        return mysqli_query($this->db, $query);
+    }
+
+    public function limpiarVuelosDePromocion($idPromocion) {
+        $idPromocion = (int)$idPromocion;
+        $query = "DELETE FROM promoxvuelo WHERE idPromo = $idPromocion";
+        return mysqli_query($this->db, $query);
+    }
+
+    public function listarVuelosPorPromocion($idPromo) {
+        $idPromo = (int)$idPromo;
+        $query = "SELECT idVuelo FROM promoxvuelo WHERE idPromo = $idPromo";
+        $resultado = mysqli_query($this->db, $query);
+
+        $ids = [];
+        while ($fila = mysqli_fetch_assoc($resultado)) {
+            $ids[] = $fila['idVuelo'];
+        }
+        return $ids;
+    }
+
+    public function obtenerPromocionVuelos($idVuelo) {
+        $query = "SELECT p.* FROM promocion p JOIN promoxvuelo pv ON p.idPromo = pv.idPromo WHERE pv.idVuelo = '$idVuelo' AND p.estadoPromo = 'aprobado'";
+        $resultado = mysqli_query($this->db, $query);
+        return mysqli_fetch_assoc($resultado);
+    }
+
     public function listarPromociones($idAerolinea) {
         $query = "SELECT * FROM promocion WHERE idAerolinea = '$idAerolinea'";
         $resultado = mysqli_query($this->db, $query);

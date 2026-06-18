@@ -20,7 +20,7 @@ require_once BASE_PATH . 'controllers/crudUsuarios.php';
 $crudUsuarios = new CrudUsuarios();
 
 
-$usuario = $crudUsuarios->obtenerCEO($idUsuario);
+$usuario = $crudUsuarios->obtenerUsuario($idUsuario);
 
 
 

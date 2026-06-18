@@ -8,6 +8,8 @@ if (!isset($_SESSION['idUsuario'])) {
     exit;
 }
 
+include '../../layouts/header.php';
+
 
 require_once BASE_PATH . 'config/app.php';
 require_once BASE_PATH . 'controllers/CrudVuelos.php';
@@ -62,22 +64,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 
-
-
-
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Aerolínea - Admin</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="../assets/css/style.css">
-</head>
 <body>
     <main>
         <div class="bg-primary-subtle py-3">
@@ -130,6 +116,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </main>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+<?php include '../../layouts/footer.php'; ?>

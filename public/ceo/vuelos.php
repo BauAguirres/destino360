@@ -43,22 +43,23 @@ $exito = '';
             <div class="row">
 
                 <?php include '../../layouts/sidebar.php'; ?>
-
+                
                 <div class="col-md-9 col-lg-10">
                     <div class="shadow-lg p-4 bg-body rounded">
-                    <h3><i class="bi bi-airplane"></i> Gestionar Vuelos</h3>
                         <div class="row align-items-center mx-auto">
-                            <div class="col-md-12 d-flex justify-content-around m-auto ">
-                                <a href="crearVuelo.php?idUsuario=<?php $usuario['idUsuario'] ?? null ?>" class="btn btn-primary">Crear Vuelo</a>
-                                <form class="d-flex" role="search">
-                                    <input class="form-control me-2" type="search" placeholder="Buscar vuelo" aria-label="Search">
-                                    <button class="btn btn-outline-success" type="submit">Buscar</button>
-                                </form>
-                            </div>
+                        <h3><i class="bi bi-airplane"></i> Gestionar Vuelos</h3>
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+                            <a href="crearVuelo.php" class="btn btn-primary">
+                                <i class="bi bi-plus-circle"></i> Crear Vuelo
+                            </a>
+                            <form class="d-flex" role="search">
+                                <input class="form-control me-2" type="search" placeholder="Buscar promoción" aria-label="Search">
+                                <button class="btn btn-outline-success" type="submit">Buscar</button>
+                            </form>
+                        </div>
                             <div class="col-12 m-auto my-4">
                                 <div class="row m-auto">
                                     <?php 
-                                    /** @var array $vuelos*/
                                     foreach ($vuelos as $vuelo): ?>
                                         <div class="col-lg-4 col-md-6 mb-4">
                                             <a href="opcionesVuelo.php?idVuelo=<?php echo $vuelo['idVuelo'] ?>" class="text-decoration-none text-reset">

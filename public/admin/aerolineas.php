@@ -69,49 +69,13 @@ $exito = $_GET['exito'] ?? '';
                         <div class="row g-4">
                             <?php if (empty($aerolineas)): ?>
                                 <div class="col-12 text-center text-muted py-5">
-                                    <i class="bi bi-airplane fs-1 d-block mb-2"></i>
-                                    No hay aerolíneas cargadas.
+                                    <i class="bi bi-building fs-1 d-block mb-2"></i>
+                                    No hay aerolíneas para mostrar.
                                 </div>
                             <?php else: ?>
                                 <?php foreach ($aerolineas as $aerolinea): ?>
                                     <div class="col-lg-4 col-md-6">
-                                        <a href="opcionesAerolinea.php?idAerolinea=<?php echo $aerolinea['idAerolinea'] ?>"
-                                           class="text-decoration-none text-reset">
-                                            <div class="card h-100 shadow-sm border-0 rounded-4">
-                                                <div class="card-body">
-                                                    <div class="d-flex align-items-center gap-3 mb-3">
-                                                        <img src="../assets/img/logosAerolineas/<?php echo ($aerolinea['urlLogo'] ?? 'default-logo.png'); ?>"
-                                                             alt="Logo"
-                                                             style="max-height: 60px; max-width: 100px; object-fit: contain;">
-                                                        <div>
-                                                            <h5 class="fw-bold mb-1">
-                                                                <?php echo ($aerolinea['nombre'] ?? 'Sin nombre'); ?>
-                                                            </h5>
-                                                            <?php if (($aerolinea['estadoAerolinea'] ?? 0) == 1): ?>
-                                                                <span class="badge bg-success">Activa</span>
-                                                            <?php else: ?>
-                                                                <span class="badge bg-danger">Inactiva</span>
-                                                            <?php endif; ?>
-                                                        </div>
-                                                    </div>
-
-                                                    <ul class="list-unstyled small mb-0">
-                                                        <li class="mb-1">
-                                                            <i class="bi bi-tag"></i>
-                                                            IATA: <strong><?php echo ($aerolinea['codIATA'] ?? '—'); ?></strong>
-                                                        </li>
-                                                        <li class="mb-1">
-                                                            <i class="bi bi-globe"></i>
-                                                            País: <strong><?php echo ($aerolinea['codPais'] ?? '—'); ?></strong>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-
-                                                <div class="card-footer bg-transparent text-end">
-                                                    <button class="btn btn-sm btn-outline-primary">Ver opciones</button>
-                                                </div>
-                                            </div>
-                                        </a>
+                                        <?php include '../../layouts/aerolinea.php'; ?>
                                     </div>
                                 <?php endforeach; ?>
                             <?php endif; ?>
@@ -125,7 +89,5 @@ $exito = $_GET['exito'] ?? '';
     </div>
 </main>
 
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <?php include '../../layouts/footer.php'; ?>

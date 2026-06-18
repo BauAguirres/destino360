@@ -1,7 +1,7 @@
 <?php
 $paginaActual = basename($_SERVER['PHP_SELF']);
 $rol = $_SESSION['rol'] ?? '';
-$_SESSION['estadoUsuario'] = $usuario['estadoUsuario'] ?? null;
+$_SESSION['estadoUsuario'] = 'verificado' ?? null;
 ?>
 <div class="col-md-3 col-lg-2 mb-3">
     <div class="shadow-lg p-3 bg-body rounded">
@@ -15,7 +15,7 @@ $_SESSION['estadoUsuario'] = $usuario['estadoUsuario'] ?? null;
                     <i class="bi bi-house"></i> Inicio
                 </a>
                 <a href="<?= BASE_URL ?>/public/admin/aerolineas.php"
-                   class="btn btn-outline-primary text-start <?= $paginaActual == 'aerolineas.php' ? 'active' : '' ?>">
+                   class="btn btn-outline-primary text-start <?= $paginaActual == 'aerolineas.php' ? 'active' : ($paginaActual == 'crearAerolinea.php' ? 'active' : '') ?>">
                     <i class="bi bi-airplane"></i> Gestionar Aerolíneas
                 </a>
                 <a href="<?= BASE_URL ?>/public/admin/promociones.php"
@@ -23,11 +23,11 @@ $_SESSION['estadoUsuario'] = $usuario['estadoUsuario'] ?? null;
                     <i class="bi bi-percent"></i> Aprobar Promociones
                 </a>
                 <a href="<?= BASE_URL ?>/public/admin/usuarios.php"
-                    class="btn btn-outline-primary text-start <?= $paginaActual == 'usuarios.php' ? 'active' : '' ?>">
+                    class="btn btn-outline-primary text-start <?= $paginaActual == 'usuarios.php' ? 'active' : ($paginaActual == 'solicitudes.php' ? 'active' : '') ?>">
                         <i class="bi bi-people"></i> Gestionar Usuarios
                     </a>
                 <a href="<?= BASE_URL ?>/public/admin/novedades.php"
-                   class="btn btn-outline-primary text-start <?= $paginaActual == 'novedades.php' ? 'active' : '' ?>">
+                   class="btn btn-outline-primary text-start <?= $paginaActual == 'novedades.php' ? 'active' : ($paginaActual == 'crearNovedad.php' ? 'active' : '') ?>">
                     <i class="bi bi-megaphone"></i> Gestionar Novedades
                 </a>
                 <a href="<?= BASE_URL ?>/public/admin/reportes.php"
@@ -42,8 +42,8 @@ $_SESSION['estadoUsuario'] = $usuario['estadoUsuario'] ?? null;
                    class="btn btn-outline-primary text-start <?= $paginaActual == 'dashboard.php' ? 'active' : '' ?>">
                     <i class="bi bi-house"></i> Mi Aerolínea
                 </a>
-                <a href="<?= BASE_URL ?>/public/ceo/profileCeo.php"
-                   class="btn btn-outline-primary text-start <?= $paginaActual == 'profileCeo.php' ? 'active' : '' ?>">
+                <a href="<?= BASE_URL ?>/public/perfil.php"
+                   class="btn btn-outline-primary text-start <?= $paginaActual == 'perfil.php' ? 'active' : '' ?>">
                     <i class="bi bi-person"></i> Información Personal
                 </a>
                 <?php if (($_SESSION['estadoUsuario'] ?? null) == 'verificado'): ?>
@@ -54,6 +54,10 @@ $_SESSION['estadoUsuario'] = $usuario['estadoUsuario'] ?? null;
                     <a href="<?= BASE_URL ?>/public/ceo/promociones.php"
                        class="btn btn-outline-primary text-start <?= $paginaActual == 'promociones.php' ? 'active' : '' ?>">
                         <i class="bi bi-percent"></i> Gestionar Promociones
+                    </a>
+                    <a href="<?= BASE_URL ?>/public/ceo/reportes.php"
+                       class="btn btn-outline-primary text-start <?= $paginaActual == 'reportes.php' ? 'active' : '' ?>">
+                        <i class="bi bi-graph-up"></i> Reportes
                     </a>
                 <?php endif; ?>
 

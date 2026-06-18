@@ -8,60 +8,63 @@ if (!isset($_SESSION['idUsuario'])) {
 }
 
 require_once __DIR__ . '/../config/db.php';
-require_once __DIR__ . '/CrudReservas.php';
-require_once __DIR__ . '/CrudVuelos.php';
+require_once __DIR__ . '/crudReservas.php';
+require_once __DIR__ . '/crudVuelos.php';
+require_once __DIR__ . '/crudPromociones.php';
 
 $crudReservas = new CrudReservas();
 $crudVuelos = new CrudVuelos();
+$crudPromociones = new CrudPromociones();
 
 $idUsuario = $_SESSION['idUsuario'];
+
 $idVueloIda = $_POST['idVueloIda'] ?? null;
-$idVueloVuelta = $_POST['idVueloVuelta'] ?? null;
-$cantidadMayores = $_POST['cantidadMayores'] ?? 1;
-$cantidadMenores = $_POST['cantidadMenores'] ?? 0;
+$idVueloVuelta = !empty($_POST['idVueloVuelta']) ? $_POST['idVueloVuelta'] : null;
+$idPromoIda = !empty($_POST['idPromoIda']) ? $_POST['idPromoIda'] : null;
+$idPromoVuelta = !empty($_POST['idPromoVuelta']) ? $_POST['idPromoVuelta'] : null;
 
-$totalPasajeros = (int)($cantidadMayores + $cantidadMenores);
-$vueloIda = $crudVuelos->obtenerVuelo($idVueloIda);
+$cantidadMayores = (int)($_POST['cantidadMayores'] ?? 0);
+$cantidadMenores = (int)($_POST['cantidadMenores'] ?? 0);
+$cantidadTotal = $cantidadMayores + $cantidadMenores;
 
-$precio = $vueloIda['precio']*$totalPasajeros;
-
-if (!$idVueloIda || $totalPasajeros == 0) {
+if (!$idVueloIda || $cantidadTotal === 0) {
     header('Location: ../public/vuelos.php?error=Datos inválidos');
     exit;
 }
-$precioTotal = $precio;
 
-if ($vueloIda['asientosDisp'] < $totalPasajeros) {
-    header('Location: ../public/vuelo.php?idVuelo=' . $idVueloIda . '&error=No hay asientos suficientes');
-    exit;
+// ===== RESERVA IDA =====
+$vueloIda = $crudVuelos->obtenerVuelo($idVueloIda);
+$precioUnitarioIda = $vueloIda['precio'];
+
+if ($idPromoIda) {
+    $promo = $crudPromociones->obtenerPromocion($idPromoIda);
+    if ($promo) {
+        $precioUnitarioIda -= ($precioUnitarioIda * $promo['porcDesc'] / 100);
+    }
 }
 
-if(!empty($idVueloVuelta)){
+$precioFinalIda = $precioUnitarioIda * $cantidadTotal;
+
+$crudReservas->crearReserva($idUsuario, $idVueloIda, $idPromoIda, $cantidadMayores, $cantidadMenores, $precioFinalIda);
+$crudVuelos->decrementarAsientos($idVueloIda, $cantidadTotal);
+
+// ===== RESERVA VUELTA (si existe) =====
+if ($idVueloVuelta) {
     $vueloVuelta = $crudVuelos->obtenerVuelo($idVueloVuelta);
+    $precioUnitarioVuelta = $vueloVuelta['precio'];
 
-    if (!$vueloVuelta) {
-        header('Location: ../public/vuelo.php?idVuelo=' . $idVueloIda . '&error=Vuelo de vuelta no encontrado');
-        exit;
+    if ($idPromoVuelta) {
+        $promoV = $crudPromociones->obtenerPromocion($idPromoVuelta);
+        if ($promoV) {
+            $precioUnitarioVuelta -= ($precioUnitarioVuelta * $promoV['porcDesc'] / 100);
+        }
     }
 
-    if ($vueloVuelta['asientosDisp'] < $totalPasajeros) {
-        header('Location: ../public/vuelo.php?idVuelo=' . $idVueloIda . '&error=No hay asientos suficientes en la vuelta');
-        exit;
-    }
+    $precioFinalVuelta = $precioUnitarioVuelta * $cantidadTotal;
 
-
-    $precio2 = $vueloVuelta['precio']*$totalPasajeros;
-    $precioTotal = $precio + $precio2;
-
-    $crudReservas->crearReserva($idUsuario, $idVueloVuelta, null, $cantidadMayores, $cantidadMenores, $precioTotal);
-    $crudVuelos->decrementarAsientos($idVueloVuelta, $totalPasajeros);
+    $crudReservas->crearReserva($idUsuario, $idVueloVuelta, $idPromoVuelta, $cantidadMayores, $cantidadMenores, $precioFinalVuelta);
+    $crudVuelos->decrementarAsientos($idVueloVuelta, $cantidadTotal);
 }
 
-$crudReservas->crearReserva($idUsuario, $idVueloIda, null, $cantidadMayores, $cantidadMenores, $precioTotal);
-$crudVuelos->decrementarAsientos($idVueloIda, $totalPasajeros);
-
-header('Location: ../public/user/profile.php?exito=Reserva creada');
+header('Location: ../public/vuelos.php?exito=Reserva creada correctamente');
 exit;
-
-?>
-

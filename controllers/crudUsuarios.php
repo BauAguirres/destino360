@@ -106,4 +106,12 @@ class CrudUsuarios {
         $fila = mysqli_fetch_assoc(mysqli_query($this->db, $query));
         return $fila['total'] ?? 0;
     }
+
+    public function reporteUsuarios() {
+    $query = "SELECT u.*, a.nombre AS nombreAerolinea
+              FROM usuario u
+              LEFT JOIN aerolinea a ON u.idAerolinea = a.idAerolinea
+              ORDER BY u.rol, u.nombreUsuario";
+    return mysqli_query($this->db, $query);
+    }
 }

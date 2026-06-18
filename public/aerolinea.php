@@ -1,29 +1,25 @@
 <?php include '../layouts/header.php';
 
-require_once '../controllers/crudAerolineas.php';
-require_once '../controllers/crudVuelos.php';
 
 $id = $_GET['id'] ?? null;
 
-// Validación: si no viene un ID numérico, volvemos al listado
-if ($id === null || !ctype_digit((string) $id)) {
-    header("Location: " . BASE_URL . "public/aerolineas.php");
-    exit;
-}
+require_once '../controllers/crudAerolineas.php';
+require_once '../controllers/crudVuelos.php';
+require_once '../controllers/crudPromociones.php';
 
 $crud = new CrudAerolineas();
 $crudVuelos = new CrudVuelos();
+$crudPromociones = new CrudPromociones();
 
-// Traer los datos de la aerolínea seleccionada
 $aerolinea = $crud->obtenerAerolinea((int) $id);
 
-// Si no existe, volvemos al listado
-if (!$aerolinea) {
+
+if (empty($aerolinea)) {
     header("Location: " . BASE_URL . "public/aerolineas.php");
     exit;
 }
 
-// Traer los vuelos de esta aerolínea
+
 $resultadoVuelos = $crudVuelos->listarVuelos((int) $id);
 
 $vuelos = [];
@@ -39,12 +35,11 @@ if ($resultadoVuelos) {
     <div class="bg-primary-subtle py-3">
         <div class="container shadow-lg p-3 mb-5 bg-body rounded">
 
-            <!-- Botón volver -->
+        
             <a href="<?php echo BASE_URL; ?>/public/aerolineas.php" class="btn btn-outline-primary mt-2">
                 <i class="bi bi-arrow-left"></i> Volver a aerolíneas
             </a>
 
-            <!-- Cabecera de la aerolínea -->
             <div class="text-center mb-5">
                 <div class="d-flex justify-content-center">
                     <div class="rounded-circle bg-white shadow-lg d-flex align-items-center justify-content-center overflow-hidden border border-3 border-white"
@@ -80,6 +75,15 @@ if ($resultadoVuelos) {
                     </div>
                 <?php else: ?>
                     <?php foreach ($vuelos as $vuelo): ?>
+                        <?php
+                            $promocion = $crudPromociones->obtenerPromocionVuelos($vuelo['idVuelo']);
+                            $precioOriginal = $vuelo['precio'] ?? 0;
+                            $precioFinal = $precioOriginal;
+
+                            if (!empty($promocion)) {
+                                $precioFinal = $precioOriginal - ($precioOriginal * ($promocion['porcDesc'] / 100));
+                            }
+                        ?>
                         <div class="col-lg-4 col-md-6">
                             <?php include '../layouts/vuelo.php'; ?>
                         </div>

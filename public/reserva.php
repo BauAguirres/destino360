@@ -9,7 +9,6 @@ if (!defined('BASE_PATH')) {
 }
 require_once BASE_PATH . 'config/app.php';
 
-// Guard: va ANTES del include del header, porque acá todavía no se imprimió nada
 if (empty($_SESSION['idUsuario'])) {
     header("Location: " . BASE_URL . "/public/index.php?login=1");
     exit;
@@ -19,30 +18,56 @@ include '../layouts/header.php';
 $estadoLogin = !empty($_SESSION['idUsuario']);
 
 require_once '../controllers/crudVuelos.php';
+require_once '../controllers/crudPromociones.php';
 
 $idVuelo = $_GET['idVuelo'] ?? null;
 
-if ($idVuelo === null || !ctype_digit((string) $idVuelo)) {
+if (empty($idVuelo)) {
     header("Location: " . BASE_URL . "/public/vuelos.php");
     exit;
 }
 
+$crudPromociones = new CrudPromociones();
 $crud = new CrudVuelos();
+
 $vueloIda = $crud->obtenerVuelo((int) $idVuelo);
 
-if (!$vueloIda) {
+if (empty($vueloIda)) {
     header("Location: " . BASE_URL . "/public/vuelos.php");
     exit;
 }
 
-// ¿Es ida y vuelta? Traemos la vuelta asociada
+$promoIda = $crudPromociones->obtenerPromocionVuelos($idVuelo);
+$precioIdaOriginal = $vueloIda['precio'];
+$precioIdaFinal = $precioIdaOriginal;
+$idPromoIda = null;
+
+if ($promoIda) {
+    $idPromoIda = $promoIda['idPromo'];
+    $precioIdaFinal = $precioIdaOriginal - ($precioIdaOriginal * $promoIda['porcDesc'] / 100);
+}
+
 $vueloVuelta = null;
 if (!empty($vueloIda['idVueloRelacionado'])) {
     $vueloVuelta = $crud->obtenerVuelo($vueloIda['idVueloRelacionado']);
 }
+
 $esIdaYVuelta = $vueloVuelta !== null;
 
-// Solo necesitamos la lista para el modal cuando el vuelo es solo ida
+$promoVuelta = null;
+$idPromoVuelta = null;
+$precioVueltaFinal = 0;
+
+if ($esIdaYVuelta) {
+    $promoVuelta = $crudPromociones->obtenerPromocionVuelos($vueloVuelta['idVuelo']);
+    $precioVueltaFinal = $vueloVuelta['precio'];
+
+    if ($promoVuelta) {
+        $idPromoVuelta = $promoVuelta['idPromo'];
+        $precioVueltaFinal = $vueloVuelta['precio'] - ($vueloVuelta['precio'] * $promoVuelta['porcDesc'] / 100);
+    }
+}
+
 $vuelos = [];
 if (!$esIdaYVuelta) {
     $resultado = $crud->listarVuelosVuelta($vueloIda['origen'], $vueloIda['destino'], $vueloIda['fechaSalida']);
@@ -92,9 +117,29 @@ if (!$esIdaYVuelta) {
                             </div>
                             <div class="col-md-4">
                                 <small class="text-muted">PRECIO</small>
-                                <p class="fw-bold fs-5 text-success" id="precioIda">$<?= $vueloIda['precio'] ?></p>
+                                <?php if ($promoIda): ?>
+                                    <p class="mb-0">
+                                        <span class="text-muted text-decoration-line-through">$<?= $precioIdaOriginal ?></span>
+                                    </p>
+                                    <p class="fw-bold fs-5 text-success mb-0" id="precioIda" data-precio="<?= $precioIdaFinal ?>">
+                                        $<?= number_format($precioIdaFinal, 2) ?>
+                                    </p>
+                                    <span class="badge bg-success">
+                                        <i class="bi bi-tag"></i> <?= $promoIda['porcDesc'] ?>% OFF
+                                    </span>
+                                <?php else: ?>
+                                    <p class="fw-bold fs-5 text-success" id="precioIda" data-precio="<?= $precioIdaOriginal ?>">
+                                        $<?= $precioIdaOriginal ?>
+                                    </p>
+                                <?php endif; ?>
                             </div>
                         </div>
+
+                        <?php if ($promoIda): ?>
+                            <div class="text-center mt-2">
+                                <small class="text-success"><i class="bi bi-tag-fill"></i> <?= htmlspecialchars($promoIda['nombrePromo']) ?></small>
+                            </div>
+                        <?php endif; ?>
                     </div>
 
                     <?php if ($esIdaYVuelta): ?>
@@ -129,19 +174,40 @@ if (!$esIdaYVuelta) {
                                 </div>
                                 <div class="col-md-4">
                                     <small class="text-muted">PRECIO</small>
-                                    <p class="fw-bold fs-5 text-success" id="precioVuelta" data-precio="<?= $vueloVuelta['precio'] ?>">$<?= $vueloVuelta['precio'] ?></p>
+                                    <?php if ($promoVuelta): ?>
+                                        <p class="mb-0">
+                                            <span class="text-muted text-decoration-line-through">$<?= $vueloVuelta['precio'] ?></span>
+                                        </p>
+                                        <p class="fw-bold fs-5 text-success mb-0" id="precioVuelta" data-precio="<?= $precioVueltaFinal ?>">
+                                            $<?= number_format($precioVueltaFinal, 2) ?>
+                                        </p>
+                                        <span class="badge bg-success">
+                                            <i class="bi bi-tag"></i> <?= $promoVuelta['porcDesc'] ?>% OFF
+                                        </span>
+                                    <?php else: ?>
+                                        <p class="fw-bold fs-5 text-success" id="precioVuelta" data-precio="<?= $precioVueltaFinal ?>">
+                                            $<?= $vueloVuelta['precio'] ?>
+                                        </p>
+                                    <?php endif; ?>
                                 </div>
                             </div>
+
+                            <?php if ($promoVuelta): ?>
+                                <div class="text-center mt-2">
+                                    <small class="text-success"><i class="bi bi-tag-fill"></i> <?= htmlspecialchars($promoVuelta['nombrePromo']) ?></small>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     <?php else: ?>
                         <div id="vueloVueltaSeleccionado"></div>
                     <?php endif; ?>
 
-                    <!-- FORMULARIO -->
                     <form action="../controllers/procesarReserva.php" method="POST">
                         <input type="hidden" name="idVueloIda" value="<?= (int) $idVuelo ?>">
                         <input type="hidden" name="idVueloVuelta" id="idVueloVuelta"
                                value="<?= $esIdaYVuelta ? (int) $vueloVuelta['idVuelo'] : '' ?>">
+                        <input type="hidden" name="idPromoIda" value="<?= $idPromoIda ?? '' ?>">
+                        <input type="hidden" name="idPromoVuelta" id="idPromoVuelta" value="<?= $idPromoVuelta ?? '' ?>">
 
                         <h3 class="mt-5 mb-4"><i class="bi bi-people"></i> Cantidad de Pasajeros</h3>
                         
@@ -247,6 +313,5 @@ if (!$esIdaYVuelta) {
         <?php endif; ?>
     </div>
 </main>
-
 
 <?php include '../layouts/footer.php'; ?>

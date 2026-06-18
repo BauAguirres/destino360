@@ -128,7 +128,6 @@ $precioPorPasajero = $precioIda + $precioVuelta;
                         </div>
                     <?php endif; ?>
 
-                    <!-- PRECIO POR PASAJERO -->
                     <div class=" bg-light border-0 mb-4">
                         <?php if ($esIdaYVuelta): ?>
                             <div class="d-flex justify-content-between">

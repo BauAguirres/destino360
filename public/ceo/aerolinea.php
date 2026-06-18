@@ -54,7 +54,6 @@ $exito = $_GET['exito'] ?? null;
         </div>
 
 <?php if (($usuario['estadoUsuario'] ?? null) == 'verificado'): ?>
-        <!-- ACCESOS RÁPIDOS -->
     <h3 class="mb-4"><i class="bi bi-lightning-charge"></i> Accesos rápidos</h3>
     <div class="row g-3 mb-5">
         <div class="col-md-4">

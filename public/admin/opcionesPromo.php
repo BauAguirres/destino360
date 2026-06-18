@@ -1,112 +1,115 @@
 <?php
-    require_once '../../controllers/crudPromociones.php';
+require_once '../../controllers/crudPromociones.php';
 
-    session_start();
+session_start();
 
-    if (!isset($_SESSION['idUsuario'])) {
-        header('Location: ../index.php?error=Debes iniciar sesion');
-        exit;
-    }
+if (!isset($_SESSION['idUsuario'])) {
+    header('Location: ../index.php?error=Debes iniciar sesion');
+    exit;
+}
 
+include '../../layouts/header.php';
 
-    
-    $crudPromociones = new crudPromociones();
-    $err = "";
-    $exito = "";
-    
+$crudPromociones = new crudPromociones();
+$err = "";
+$exito = "";
 
-    
-    $idPromo = $_GET['idPromo'];
-    $promocion = $crudPromociones->obtenerPromocion($idPromo);
+$idPromo = $_GET['idPromo'];
+$promocion = $crudPromociones->obtenerPromocion($idPromo);
+
+$estado = $promocion['estadoPromo'] ?? 'pendiente';
+$estadoBadge = [
+    'aprobado'  => ['bg-success', 'Aprobada'],
+    'pendiente' => ['bg-warning text-dark', 'Pendiente'],
+];
+[$badgeClase, $badgeTexto] = $estadoBadge[$estado] ?? ['bg-danger', 'Rechazada'];
 ?>
 
 
+<main class="bg-primary-subtle py-5">
+    <div class="container shadow-lg p-5 bg-body rounded">
 
+        <a href="dashboard.php" class="btn btn-outline-primary mb-4">
+            <i class="bi bi-arrow-left"></i> Volver
+        </a>
 
+        <?php if ($err): ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?php echo $err; ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        <?php endif; ?>
+        <?php if ($exito): ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <?php echo $exito; ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        <?php endif; ?>
 
+        <div class="text-center border-bottom pb-4 mb-4">
+            <div class="d-flex justify-content-center mb-3">
+                <div class="rounded-circle bg-primary-subtle d-flex align-items-center justify-content-center"
+                        style="width: 90px; height: 90px;">
+                    <i class="bi bi-tag-fill text-primary" style="font-size: 44px;"></i>
+                </div>
+            </div>
+            <h2 class="fw-bold mb-1"><?php echo htmlspecialchars($promocion['nombrePromo'] ?? ''); ?></h2>
+            <p class="text-muted mb-2"><?php echo htmlspecialchars($promocion['nombre'] ?? ''); ?></p>
+            <span class="badge <?php echo $badgeClase; ?> fs-6"><?php echo $badgeTexto; ?></span>
+        </div>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Promoción - Admin</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="../assets/css/style.css">
-</head>
-<body>
-    <main>
-        <div class="bg-primary-subtle py-3">
-            <div class="shadow-lg p-3 mb-5 bg-body rounded container">
-                <div class="text-center">
-                    <h1>Verificar Promoción</h1>
-                    <p>Verifica los datos para habilitar una nueva promoción</p>
-
-
-                
-                    <div class="row fs-4">
-                        <?php if ($err): ?>
-                                <div class="alert alert-danger alert-dismissible fade show w-50 m-auto my-3" role="alert">
-                                    <?php echo $err; ?>
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                </div>
-                        <?php endif; ?>
-
-                        <?php if ($exito): ?>
-                                <div class="alert alert-success alert-dismissible fade show w-50 m-auto my-3" role="alert">
-                                    <?php echo $exito; ?>
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                </div>
-                        <?php endif; ?>
-                        <div class="col-md-4">
-                            <label class="form-label">Estado</label>
-                            <input type="text" class="form-control bg-dark text-light fw-bold" value="<?= $promocion['estadoPromo']??null ?>" disabled>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Nombre</label>
-                            <input type="text" class="form-control bg-dark text-light fw-bold" value="<?= $promocion['nombrePromo']??null ?>" disabled>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Aerolinea</label>
-                            <input type="text" class="form-control bg-dark text-light fw-bold" value="<?= $promocion['nombre']??null ?>" disabled>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Porcentaje de Descuento</label>
-                            <input type="text" class="form-control bg-dark text-light fw-bold" value="<?= $promocion['porcDesc']??null ?>" disabled>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Fecha Inicio</label>
-                            <input type="text" class="form-control bg-dark text-light fw-bold" value="<?= $promocion['fechaInicio']??null ?>" disabled>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Fecha Fin</label>
-                            <input type="text" class="form-control bg-dark text-light fw-bold" value="<?= $promocion['fechaFin']??null ?>" disabled>
-                        </div><div class="col-md-12">
-                            <label class="form-label">Descripcion</label>
-                            <textarea class="form-control bg-dark text-light fw-bold" disabled rows="4"><?= htmlspecialchars($promocion['descPromocion'] ?? '') ?></textarea>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="btn-group" role="group" aria-label="Basic outlined example">
-                                    <?php if ($promocion['estadoPromo'] == 'pendiente') : ?>
-                                        <a href="actions/estadoPromo.php?idPromo=<?=$promocion['idPromo'] ?>&accion=verificar"  class="btn btn-outline-success"  onclick="return confirm('Estás Seguro que desea cambiar el estado de la promocion?' )" >
-                                            Aprobar
-                                        </a>
-                                        <a href="actions/estadoPromo.php?idPromo=<?=$promocion['idPromo'] ?>&accion=rechazar"  class="btn btn-outline-danger"  onclick="return confirm('Estás Seguro que desea cambiar el estado de la promocion?' )" >
-                                            Rechazar
-                                        </a>
-                                    <?php endif; ?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-
+        <div class="row g-4 mb-4">
+            <div class="col-md-4">
+                <small class="text-muted d-block">
+                    <i class="bi bi-percent"></i> Descuento
+                </small>
+                <span class="fw-semibold fs-4 text-success"><?php echo $promocion['porcDesc'] ?? '0'; ?>%</span>
+            </div>
+            <div class="col-md-4">
+                <small class="text-muted d-block">
+                    <i class="bi bi-calendar-check"></i> Fecha inicio
+                </small>
+                <span class="fw-semibold"><?php echo $promocion['fechaInicio'] ?? 'No disponible'; ?></span>
+            </div>
+            <div class="col-md-4">
+                <small class="text-muted d-block">
+                    <i class="bi bi-calendar-x"></i> Fecha fin
+                </small>
+                <span class="fw-semibold"><?php echo $promocion['fechaFin'] ?? 'No disponible'; ?></span>
+            </div>
+            <div class="col-md-12">
+                <small class="text-muted d-block">
+                    <i class="bi bi-card-text"></i> Descripción
+                </small>
+                <p class="fw-semibold mb-0"><?php echo htmlspecialchars($promocion['descPromocion'] ?? 'Sin descripción'); ?></p>
             </div>
         </div>
-    </main>
+
+        <?php if ($estado == 'pendiente'): ?>
+            <div class="border-top pt-4">
+                <h6 class="text-muted mb-3"><i class="bi bi-gear"></i> Acciones</h6>
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="actions/estadoPromo.php?idPromo=<?= $promocion['idPromo'] ?>&accion=verificar"
+                        class="btn btn-success"
+                        onclick="return confirm('¿Estás seguro que deseas aprobar esta promoción?')">
+                        <i class="bi bi-check-circle"></i> Aprobar
+                    </a>
+                    <a href="actions/estadoPromo.php?idPromo=<?= $promocion['idPromo'] ?>&accion=rechazar"
+                        class="btn btn-outline-danger"
+                        onclick="return confirm('¿Estás seguro que deseas rechazar esta promoción?')">
+                        <i class="bi bi-x-circle"></i> Rechazar
+                    </a>
+                </div>
+            </div>
+        <?php else: ?>
+            <div class="border-top pt-4 text-center text-muted">
+                <i class="bi bi-info-circle"></i> Esta promoción ya fue procesada.
+            </div>
+        <?php endif; ?>
+
+    </div>
+</main>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+
+<?php include '../../layouts/footer.php'; ?>

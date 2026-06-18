@@ -61,64 +61,16 @@ $exito = $_GET['exito'] ?? '';
                                 <button class="btn btn-outline-success" type="submit">Buscar</button>
                             </form>
                         </div>
-
                         <div class="row g-4">
                             <?php if (empty($promociones)): ?>
                                 <div class="col-12 text-center text-muted py-5">
-                                    <i class="bi bi-percent fs-1 d-block mb-2"></i>
+                                    <i class="bi bi-tags fs-1 d-block mb-2"></i>
                                     No hay promociones para mostrar.
                                 </div>
                             <?php else: ?>
                                 <?php foreach ($promociones as $promocion): ?>
                                     <div class="col-lg-4 col-md-6">
-                                        <a href="opcionesPromo.php?idPromo=<?php echo $promocion['idPromo'] ?>"
-                                           class="text-decoration-none text-reset">
-                                            <div class="card h-100 shadow-sm border-0 rounded-4">
-                                                <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
-                                                    <span class="fw-semibold text-truncate">
-                                                        <?php echo $promocion['nombrePromo'] ?? 'Sin nombre'; ?>
-                                                    </span>
-                                                    <?php $estado = $promocion['estadoPromo'] ?? 'rechazado'; ?>
-                                                    <?php if ($estado == 'aprobado'): ?>
-                                                        <span class="badge bg-success">Aprobada</span>
-                                                    <?php elseif ($estado == 'pendiente'): ?>
-                                                        <span class="badge bg-warning text-dark">Pendiente</span>
-                                                    <?php else: ?>
-                                                        <span class="badge bg-danger">Rechazada</span>
-                                                    <?php endif; ?>
-                                                </div>
-
-                                                <div class="card-body text-center d-flex flex-column">
-                                                    <?php if (!empty($promocion['nombre'])): ?>
-                                                        <div class="text-muted small mb-2">
-                                                            <i class="bi bi-airplane"></i> <?php echo $promocion['nombre']; ?>
-                                                        </div>
-                                                    <?php endif; ?>
-
-                                                    <div class="my-2">
-                                                        <span class="display-4 fw-bold text-primary">
-                                                            <?php echo $promocion['porcDesc'] ?? '0'; ?>%
-                                                        </span>
-                                                        <div class="text-muted small">de descuento</div>
-                                                    </div>
-
-                                                    <ul class="list-unstyled small mb-0 text-start mt-auto">
-                                                        <li class="mb-1">
-                                                            <i class="bi bi-calendar-check text-success"></i>
-                                                            Desde: <?php echo $promocion['fechaInicio'] ?? '—'; ?>
-                                                        </li>
-                                                        <li>
-                                                            <i class="bi bi-calendar-x text-danger"></i>
-                                                            Hasta: <?php echo $promocion['fechaFin'] ?? '—'; ?>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-
-                                                <div class="card-footer bg-transparent text-end">
-                                                    <button class="btn btn-sm btn-outline-primary">Ver opciones</button>
-                                                </div>
-                                            </div>
-                                        </a>
+                                        <?php include '../../layouts/promocion.php'; ?>
                                     </div>
                                 <?php endforeach; ?>
                             <?php endif; ?>
@@ -132,7 +84,4 @@ $exito = $_GET['exito'] ?? '';
     </div>
 </main>
 
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-<?php include '../../layouts/footerAdmin.php'; ?>
+<?php include '../../layouts/footer.php'; ?>

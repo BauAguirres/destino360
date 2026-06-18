@@ -85,15 +85,24 @@ class CrudVuelos {
         mysqli_query($this->db, $query);
     }
 
-public function contarVuelosPorEstado($idAerolinea) {
-    $idAerolinea = (int) $idAerolinea;
-    $query = "SELECT 
-                COUNT(*) AS total,
-                SUM(CASE WHEN estadoVuelo = 1 THEN 1 ELSE 0 END) AS activos,
-                SUM(CASE WHEN estadoVuelo = 0 THEN 1 ELSE 0 END) AS inactivos
-              FROM vuelo 
-              WHERE idAerolinea = $idAerolinea";
-    $resultado = mysqli_query($this->db, $query);
-    return mysqli_fetch_assoc($resultado);
-}
+    public function contarVuelosPorEstado($idAerolinea) {
+        $idAerolinea = (int) $idAerolinea;
+        $query = "SELECT 
+                    COUNT(*) AS total,
+                    SUM(CASE WHEN estadoVuelo = 1 THEN 1 ELSE 0 END) AS activos,
+                    SUM(CASE WHEN estadoVuelo = 0 THEN 1 ELSE 0 END) AS inactivos
+                FROM vuelo 
+                WHERE idAerolinea = $idAerolinea";
+        $resultado = mysqli_query($this->db, $query);
+        return mysqli_fetch_assoc($resultado);
+    }
+
+    public function reporteVuelos() {
+    $query = "SELECT v.*, a.nombre AS nombreAerolinea,
+                     (v.asientosTotales - v.asientosDisp) AS asientosOcupados
+              FROM vuelo v
+              JOIN aerolinea a ON v.idAerolinea = a.idAerolinea
+              ORDER BY a.nombre, v.fechaSalida";
+    return mysqli_query($this->db, $query);
+    }
 }

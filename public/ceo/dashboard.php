@@ -48,16 +48,13 @@ $exito = $_GET['exito'] ?? '';
 
             <div class="row">
 
-                <!-- SIDEBAR -->
                 <?php include '../../layouts/sidebar.php'; ?>
 
-                <!-- CONTENIDO -->
                 <div class="col-md-9 col-lg-10">
                     <div class="shadow-lg p-4 bg-body rounded">
 
                         <strong class="d-block mb-4 fs-5">Bienvenido, <?php echo $usuario['nombreUsuario']; ?>!</strong>
 
-                        <!-- CREDENCIAL DE LA AEROLÍNEA -->
                         <h3 class="mb-4"><i class="bi bi-airplane"></i> Mi Aerolínea</h3>
                         <div class="row justify-content-center mb-5">
                             <div class="col-lg-8">
@@ -107,7 +104,6 @@ $exito = $_GET['exito'] ?? '';
 
                         <?php if (($usuario['estadoUsuario'] ?? null) == 'verificado'): ?>
 
-                            <!-- RESUMEN DE VUELOS -->
                         <h3 class="mb-4"><i class="bi bi-speedometer2"></i> Resumen de Vuelos</h3>
                         <div class="row g-3 mb-4">
 
@@ -158,7 +154,6 @@ $exito = $_GET['exito'] ?? '';
 
                         </div>
 
-                        <!-- RESUMEN DE RESERVAS -->
                         <h3 class="mb-4"><i class="bi bi-bookmark-check"></i> Resumen de Reservas</h3>
                         <div class="row g-3 mb-4">
 
@@ -207,7 +202,7 @@ $exito = $_GET['exito'] ?? '';
                                 </div>
                             </div>
                         </div>
-                        <!-- ACCESOS RÁPIDOS -->
+
                         <h3 class="mb-4"><i class="bi bi-lightning-charge"></i> Accesos rápidos</h3>
                         <div class="row g-3 mb-3">
                             <div class="col-md-4">
@@ -231,7 +226,6 @@ $exito = $_GET['exito'] ?? '';
                         </div>
                         <?php else: ?>
 
-                            <!-- ESTADO DE SOLICITUD (no verificado) -->
                             <h3 class="mb-3"><i class="bi bi-info-circle"></i> Estado de Solicitud</h3>
                             <?php if (($usuario['estadoUsuario'] ?? null) == 'pendiente'): ?>
                                 <div class="alert alert-warning d-flex align-items-center gap-2">
@@ -263,6 +257,4 @@ $exito = $_GET['exito'] ?? '';
 </main>
 
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-<?php include '../../layouts/footerAdmin.php'; ?>
+<?php include '../../layouts/footer.php'; ?>
