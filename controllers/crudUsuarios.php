@@ -114,4 +114,31 @@ class CrudUsuarios {
               ORDER BY u.rol, u.nombreUsuario";
     return mysqli_query($this->db, $query);
     }
+    public function guardarTokenRecupero($email, $token) {
+    $email = mysqli_real_escape_string($this->db, $email);
+    $token = mysqli_real_escape_string($this->db, $token);
+    $query = "UPDATE usuario SET tokenRecup = '$token' WHERE email = '$email'";
+    return mysqli_query($this->db, $query);
+}
+
+    public function buscarPorEmail($email) {
+        $email = mysqli_real_escape_string($this->db, $email);
+        $query = "SELECT * FROM usuario WHERE email = '$email' LIMIT 1";
+        return mysqli_fetch_assoc(mysqli_query($this->db, $query));
+    }
+
+    public function buscarPorTokenRecupero($token) {
+        $token = mysqli_real_escape_string($this->db, $token);
+        $query = "SELECT * FROM usuario WHERE tokenRecup = '$token' LIMIT 1";
+        return mysqli_fetch_assoc(mysqli_query($this->db, $query));
+    }
+
+    public function actualizarPassword($token, $nuevaPassword) {
+        $token = mysqli_real_escape_string($this->db, $token);
+        $hash = password_hash($nuevaPassword, PASSWORD_DEFAULT);
+        $query = "UPDATE usuario 
+                SET password = '$hash', tokenRecup = NULL 
+                WHERE tokenRecup = '$token'";
+        return mysqli_query($this->db, $query);
+    }
 }

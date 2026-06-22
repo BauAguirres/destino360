@@ -39,7 +39,12 @@ class CrudPromociones {
     }
 
     public function obtenerPromocionVuelos($idVuelo) {
-        $query = "SELECT p.* FROM promocion p JOIN promoxvuelo pv ON p.idPromo = pv.idPromo WHERE pv.idVuelo = '$idVuelo' AND p.estadoPromo = 'aprobado'";
+        $idVuelo = (int)$idVuelo;
+        $query = "SELECT p.* FROM promocion p 
+                JOIN promoxvuelo pv ON p.idPromo = pv.idPromo 
+                WHERE pv.idVuelo = $idVuelo 
+                AND p.estadoPromo = 'aprobado'
+                AND CURDATE() BETWEEN p.fechaInicio AND p.fechaFin";
         $resultado = mysqli_query($this->db, $query);
         return mysqli_fetch_assoc($resultado);
     }
@@ -86,5 +91,27 @@ class CrudPromociones {
         $query = "SELECT COUNT(*) AS total FROM promocion WHERE estadoPromo = 'pendiente'";
         $fila = mysqli_fetch_assoc(mysqli_query($this->db, $query));
         return $fila['total'] ?? 0;
+    }
+
+    public function buscarPromociones($idAerolinea, $texto = '', $estado = '') {
+        $idAerolinea = (int)$idAerolinea;
+        $where = "WHERE idAerolinea = $idAerolinea";
+
+        if (!empty($texto)) {
+            $texto = mysqli_real_escape_string($this->db, $texto);
+            $where .= " AND nombrePromo LIKE '%$texto%'";
+        }
+
+        if ($estado === 'finalizado') {
+            $where .= " AND estadoPromo = 'aprobado' AND fechaFin < CURDATE()";
+        } elseif ($estado === 'aprobado') {
+            $where .= " AND estadoPromo = 'aprobado' AND fechaFin >= CURDATE()";
+        } elseif (!empty($estado)) {
+            $estado = mysqli_real_escape_string($this->db, $estado);
+            $where .= " AND estadoPromo = '$estado'";
+        }
+
+        $query = "SELECT * FROM promocion $where ORDER BY idPromo DESC";
+        return mysqli_query($this->db, $query);
     }
 }

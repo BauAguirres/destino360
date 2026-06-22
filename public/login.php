@@ -7,6 +7,13 @@ require_once '../controllers/crudUsuarios.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     $email = $_POST['email'];
     $pass = $_POST['password'];
+    $recordar = isset($_POST['recordar']);
+
+    if ($recordar) {
+        setcookie('emailRecordado', $email, time() + (30 * 24 * 60 * 60), '/');
+    } else {
+        setcookie('emailRecordado', '', time() - 3600, '/');
+    }
 
     $crud = new CrudUsuarios;
     $usuario = $crud->obtenerEmail($email);

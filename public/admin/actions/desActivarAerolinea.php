@@ -26,15 +26,15 @@ if ($aerolinea['estadoAerolinea'] == 0) {
 
 
     $crud->activarAerolinea($id);
-    header('Location: ../dashboard.php?$exito=Aerolinea_activada');
+    header('Location: ../aerolineas.php?$exito=Aerolinea_activada');
     exit;
 }
 
 elseif ($aerolinea['estadoAerolinea'] == 1){
     $crud->desactivarAerolinea($id);
-    header('Location: ../dashboard.php?$exito=Aerolinea_desactivada');
+    header('Location: ../aerolineas.php?$exito=Aerolinea_desactivada');
     exit;
 }
 
-header('Location: ../dashboard.php?error=Error+al+cambiar+estado');
+header('Location: ../aerolineas.php?error=Error+al+cambiar+estado');
 exit;

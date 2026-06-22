@@ -1,14 +1,22 @@
 <?php
+/** @var array $promocion */
+$hoy = date('Y-m-d');
 $estado = $promocion['estadoPromo'] ?? 'pendiente';
+
+if ($estado == 'aprobado' && $hoy > $promocion['fechaFin']) {
+    $estado = 'finalizada';
+}
+
 $estadoBadge = [
-    'aprobado'  => ['bg-success', 'bi-check-circle', 'Aprobada'],
-    'pendiente' => ['bg-warning text-dark', 'bi-clock-history', 'Pendiente'],
-    'rechazado' => ['bg-danger', 'bi-x-circle', 'Rechazada'],
+    'aprobado'   => ['bg-success', 'bi-check-circle', 'Aprobada'],
+    'pendiente'  => ['bg-warning text-dark', 'bi-clock-history', 'Pendiente'],
+    'rechazado'  => ['bg-danger', 'bi-x-circle', 'Rechazada'],
+    'finalizada' => ['bg-secondary', 'bi-calendar-x', 'Finalizada'],
 ];
 [$badgeClase, $badgeIcono, $badgeTexto] = $estadoBadge[$estado] ?? ['bg-secondary', 'bi-question-circle', 'Sin estado'];
 ?>
 
-<a href="opcionesPromo.php?idPromo=<?php echo $promocion['idPromo'] ?? ''; ?>" class="text-decoration-none text-reset">
+<a href="opcionesPromo.php?idPromocion=<?php echo $promocion['idPromo'] ?? ''?>" class="text-decoration-none text-reset">
     <div class="card h-100 shadow-sm border-0 rounded-4">
         <div class="card-body">
             <div class="d-flex align-items-center gap-3 mb-3">
@@ -18,14 +26,9 @@ $estadoBadge = [
                 </div>
                 <div>
                     <h5 class="fw-bold mb-1"><?php echo $promocion['nombrePromo'] ?? 'Sin nombre'; ?></h5>
-                    <?php $estado = $promocion['estadoPromo'] ?? 'pendiente'; ?>
-                    <?php if ($estado == 'aprobado'): ?>
-                        <span class="badge bg-success">Aprobada</span>
-                    <?php elseif ($estado == 'pendiente'): ?>
-                        <span class="badge bg-warning text-dark">Pendiente</span>
-                    <?php else: ?>
-                        <span class="badge bg-danger">Rechazada</span>
-                    <?php endif; ?>
+                    <span class="badge <?php echo $badgeClase; ?>">
+                        <i class="bi <?php echo $badgeIcono; ?>"></i> <?php echo $badgeTexto; ?>
+                    </span>
                 </div>
             </div>
 

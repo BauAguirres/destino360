@@ -5,6 +5,11 @@ include '../layouts/header.php';
 
 $estadoLogin = !empty($_SESSION['idUsuario']);
 
+$origen = $_GET['origen'] ?? '';
+$destino = $_GET['destino'] ?? '';
+$tipo = $_GET['tipo'] ?? '';
+$pasajeros = $_GET['pasajeros'] ?? 0;
+$promo = $_GET['promo'] ?? '';
 
 require_once '../controllers/crudVuelos.php';
 require_once '../controllers/crudPromociones.php';
@@ -16,6 +21,16 @@ $crudPromociones = new CrudPromociones();
 $resultado = $crud->listarVuelosActivos();
 
 $vuelos = [];
+
+
+if (!empty($promo)) {
+    $resultado = $crud->listarVuelosConPromocion();
+} elseif (!empty($origen) || !empty($destino) || !empty($tipo) || $pasajeros > 0) {
+    $resultado = $crud->buscarVuelos($origen, $destino, $tipo, $pasajeros);
+} else {
+    $resultado = $crud->listarVuelosActivos();
+}
+
 
 if ($resultado) {
     while ($fila = mysqli_fetch_assoc($resultado)) {
@@ -35,17 +50,64 @@ if ($resultado) {
             <h1 class="text-center my-5">Vuelos</h1>
 
             <div class="row">
-                <div class="col-md-6">
-                    <a class="btn btn-outline-primary" href="">Filtro</a>
-                </div>
-                <div class="col-md-6">
-                    <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Buscar por origen o destino" aria-label="Search">
-                        <button class="btn btn-outline-success" type="submit">Buscar</button>
-                    </form>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <button class="btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#panelFiltros">
+                            <i class="bi bi-funnel"></i> Filtros
+                        </button>
+                    </div>
+                    <div class="col-md-6">
+                        <form class="d-flex" method="GET" role="search">
+                            <input class="form-control me-2" type="search" name="destino" placeholder="Buscar por destino"
+                                value="<?php echo htmlspecialchars($destino); ?>" aria-label="Search">
+                            <button class="btn btn-outline-success" type="submit">Buscar</button>
+                        </form>
+                    </div>
                 </div>
 
-                <div class="col-12 my-4">
+                <!-- PANEL DE FILTROS -->
+                <div class="collapse mb-4" id="panelFiltros">
+                    <div class="border rounded-4 p-4 bg-light">
+                        <form method="GET">
+                            <div class="row g-3">
+                                <div class="col-md-3">
+                                    <label class="form-label fw-bold">Origen</label>
+                                    <input type="text" class="form-control" name="origen"
+                                        value="<?php echo htmlspecialchars($origen); ?>" placeholder="Ciudad de origen">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label fw-bold">Destino</label>
+                                    <input type="text" class="form-control" name="destino"
+                                        value="<?php echo htmlspecialchars($destino); ?>" placeholder="Ciudad de destino">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label fw-bold">Tipo de viaje</label>
+                                    <select class="form-select" name="tipo">
+                                        <option value="">Todos</option>
+                                        <option value="idaSolo" <?php echo $tipo == 'idaSolo' ? 'selected' : ''; ?>>Solo ida</option>
+                                        <option value="idaVuelta" <?php echo $tipo == 'idaVuelta' ? 'selected' : ''; ?>>Ida y vuelta</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label fw-bold">Pasajeros (mínimo)</label>
+                                    <input type="number" class="form-control" name="pasajeros" min="1"
+                                        value="<?php echo $pasajeros > 0 ? (int)$pasajeros : ''; ?>" placeholder="Cantidad">
+                                </div>
+
+                                <div class="col-12 d-flex gap-2 mt-2">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-search"></i> Aplicar filtros
+                                    </button>
+                                    <a href="<?php echo BASE_URL; ?>/public/vuelos.php" class="btn btn-outline-secondary">
+                                        <i class="bi bi-x-circle"></i> Limpiar
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-12 my-4">   
                     <div class="row g-4">
                         <?php if (empty($vuelos)): ?>
                             <div class="col-12 text-center text-muted py-5">

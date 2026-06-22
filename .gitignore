@@ -1,7 +1,6 @@
-# Dependencias de Composer (se regeneran con composer install)
-/vendor/
 
-# Credenciales y configuración sensible
+/vendor/
+config/mailer.php
 /config/mp.php
 /config/db.php
 

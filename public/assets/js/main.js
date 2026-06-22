@@ -2,6 +2,72 @@ function abrirMenuPas() {
     document.getElementById("menuFlotante").classList.toggle("mostrar");
 }
 
+// PASAJEROS DEL INDEX
+let adultos = 1;
+let ninos = 0;
+
+function abrirMenuPas() {
+    const menu = document.getElementById("menuFlotante");
+    if (menu) {
+        menu.classList.toggle("mostrar");
+    }
+}
+
+function actualizarTextoPasajeros() {
+    const total = adultos + ninos;
+    const texto = document.getElementById('pasajerosText');
+    if (texto) {
+        texto.innerText = 'P ' + total;
+    }
+    const input = document.getElementById('pasajerosInput');
+    if (input) {
+        input.value = total;
+    }
+}
+
+// Solo si estamos en una página con el menú de pasajeros
+if (document.getElementById('menuFlotante')) {
+
+    const botones = document.querySelectorAll('.btnPasajero');
+
+    // botones[0] = restar adultos, botones[1] = sumar adultos
+    // botones[2] = restar niños,  botones[3] = sumar niños
+
+    botones[0].addEventListener('click', function () {
+        if (adultos > 1) {          // mínimo 1 adulto
+            adultos--;
+            document.getElementById('adultosCount').innerText = adultos;
+            actualizarTextoPasajeros();
+        }
+    });
+
+    botones[1].addEventListener('click', function () {
+        if (adultos < 9) {          // máximo 9
+            adultos++;
+            document.getElementById('adultosCount').innerText = adultos;
+            actualizarTextoPasajeros();
+        }
+    });
+
+    botones[2].addEventListener('click', function () {
+        if (ninos > 0) {            // mínimo 0 niños
+            ninos--;
+            document.getElementById('ninosCount').innerText = ninos;
+            actualizarTextoPasajeros();
+        }
+    });
+
+    botones[3].addEventListener('click', function () {
+        if (ninos < 9) {
+            ninos++;
+            document.getElementById('ninosCount').innerText = ninos;
+            actualizarTextoPasajeros();
+        }
+    });
+}
+
+
+
 
 
 function cambiarTipoViaje() {

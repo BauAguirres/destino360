@@ -30,6 +30,10 @@ $_SESSION['estadoUsuario'] = 'verificado' ?? null;
                    class="btn btn-outline-primary text-start <?= $paginaActual == 'novedades.php' ? 'active' : ($paginaActual == 'crearNovedad.php' ? 'active' : '') ?>">
                     <i class="bi bi-megaphone"></i> Gestionar Novedades
                 </a>
+                <a href="<?= BASE_URL ?>/public/admin/gestionCarrusel.php"
+                   class="btn btn-outline-primary text-start <?= $paginaActual == 'gestionCarrusel.php' ? 'active' : ($paginaActual == 'carrusel.php' ? 'active' : '') ?>">
+                    <i class="bi bi-images"></i> Gestionar Carrusel
+                </a>
                 <a href="<?= BASE_URL ?>/public/admin/reportes.php"
                    class="btn btn-outline-primary text-start <?= $paginaActual == 'reportes.php' ? 'active' : '' ?>">
                     <i class="bi bi-graph-up"></i> Reportes

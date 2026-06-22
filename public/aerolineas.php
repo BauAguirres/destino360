@@ -3,35 +3,45 @@
 require_once '../controllers/crudAerolineas.php';
 
 $crud = new CrudAerolineas();
-$resultado = $crud->listarAerolineasActivas();
+
+$busqueda = $_GET['busqueda'] ?? '';
+
+if (!empty($busqueda)) {
+    $resultado = $crud->buscarAerolineas($busqueda);
+} else {
+    $resultado = $crud->listarAerolineasActivas();
+}
 
 $aerolineas = [];
-
 if ($resultado) {
     while ($fila = mysqli_fetch_assoc($resultado)) {
         $aerolineas[] = $fila;
     }
 }
-
 ?>
-
 
 <main>
     <div class="bg-primary-subtle py-3">
         <div class="container shadow-lg p-3 mb-5 bg-body rounded">
             <h1 class="text-center my-5">Aerolíneas</h1>
             <div class="row">
-                <div class="col-md-6">
-                    <a class="btn btn-outline-primary" href="">Filtro</a>
-                </div>
-                <div class="col-md-6">
-                    <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Buscar aerolínea" aria-label="Search">
+                <div class="col-md-8 col-lg-6 m-auto">
+                    <form class="d-flex" method="GET" role="search">
+                        <input class="form-control me-2" type="search" name="busqueda"
+                               placeholder="Buscar aerolínea por nombre, IATA o país"
+                               value="<?php echo $busqueda; ?>" aria-label="Search">
                         <button class="btn btn-outline-success" type="submit">Buscar</button>
                     </form>
                 </div>
 
                 <div class="col-12 my-4">
+                    <?php if (!empty($busqueda)): ?>
+                        <p class="text-muted">
+                            Resultados para "<?php echo $busqueda; ?>"
+                            <a href="aerolineas.php" class="ms-2"><i class="bi bi-x-circle"></i> Limpiar</a>
+                        </p>
+                    <?php endif; ?>
+
                     <div class="row g-4">
                         <?php if (empty($aerolineas)): ?>
                             <div class="col-12 text-center text-muted py-5">
@@ -71,6 +81,5 @@ if ($resultado) {
         </div>
     </div>
 </main>
-
 
 <?php include '../layouts/footer.php'; ?>

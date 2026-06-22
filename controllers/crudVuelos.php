@@ -24,15 +24,15 @@ class CrudVuelos {
     }
 
     public function vincularVuelos($idIda, $idVuelta) {
-    $idIda = (int)$idIda;
-    $idVuelta = (int)$idVuelta;
-    
-    $query1 = "UPDATE vuelo SET idVueloRelacionado = $idVuelta WHERE idVuelo = $idIda";
-    mysqli_query($this->db, $query1);
-    
-    $query2 = "UPDATE vuelo SET idVueloRelacionado = $idIda WHERE idVuelo = $idVuelta";
-    mysqli_query($this->db, $query2);
-}
+        $idIda = (int)$idIda;
+        $idVuelta = (int)$idVuelta;
+        
+        $query1 = "UPDATE vuelo SET idVueloRelacionado = $idVuelta WHERE idVuelo = $idIda";
+        mysqli_query($this->db, $query1);
+        
+        $query2 = "UPDATE vuelo SET idVueloRelacionado = $idIda WHERE idVuelo = $idVuelta";
+        mysqli_query($this->db, $query2);
+    }
 
     public function eliminarVuelo($id) {
         $query = "DELETE FROM vuelo WHERE idVuelo = $id";
@@ -98,11 +98,85 @@ class CrudVuelos {
     }
 
     public function reporteVuelos() {
-    $query = "SELECT v.*, a.nombre AS nombreAerolinea,
-                     (v.asientosTotales - v.asientosDisp) AS asientosOcupados
-              FROM vuelo v
-              JOIN aerolinea a ON v.idAerolinea = a.idAerolinea
-              ORDER BY a.nombre, v.fechaSalida";
-    return mysqli_query($this->db, $query);
+        $query = "SELECT v.*, a.nombre AS nombreAerolinea,
+                        (v.asientosTotales - v.asientosDisp) AS asientosOcupados
+                FROM vuelo v
+                JOIN aerolinea a ON v.idAerolinea = a.idAerolinea
+                ORDER BY a.nombre, v.fechaSalida";
+        return mysqli_query($this->db, $query);
+    }
+
+    public function destinosDestacados($limite = 3) {
+        $limite = (int)$limite;
+        $query = "SELECT destino, COUNT(*) AS cantidad
+                FROM vuelo
+                WHERE estadoVuelo = 1
+                AND tipoVuelo != 'vuelta'
+                GROUP BY destino
+                ORDER BY cantidad DESC
+                LIMIT $limite";
+        return mysqli_query($this->db, $query);
+    }
+
+    public function buscarVuelos($origen = '', $destino = '', $tipo = '', $pasajeros = 0) {
+        $where = "WHERE v.estadoVuelo = 1 AND v.tipoVuelo != 'vuelta'";
+
+        if (!empty($origen)) {
+            $origen = mysqli_real_escape_string($this->db, $origen);
+            $where .= " AND v.origen LIKE '%$origen%'";
+        }
+        if (!empty($destino)) {
+            $destino = mysqli_real_escape_string($this->db, $destino);
+            $where .= " AND v.destino LIKE '%$destino%'";
+        }
+        if (!empty($tipo)) {
+            $tipo = mysqli_real_escape_string($this->db, $tipo);
+            $where .= " AND v.tipoVuelo = '$tipo'";
+        }
+
+        if ($pasajeros > 0) {
+            $pasajeros = (int)$pasajeros;
+            $where .= " AND v.asientosDisp >= $pasajeros";
+        }
+
+        $query = "SELECT v.*, a.nombre, a.urlLogo
+                FROM vuelo v
+                JOIN aerolinea a ON v.idAerolinea = a.idAerolinea
+                $where";
+        return mysqli_query($this->db, $query);
+    }
+
+    public function listarVuelosConPromocion() {
+        $query = "SELECT DISTINCT v.*, a.nombre, a.urlLogo
+                FROM vuelo v
+                JOIN aerolinea a ON v.idAerolinea = a.idAerolinea
+                JOIN promoxvuelo pv ON v.idVuelo = pv.idVuelo
+                JOIN promocion p ON pv.idPromo = p.idPromo
+                WHERE v.estadoVuelo = 1
+                AND v.tipoVuelo != 'vuelta'
+                AND p.estadoPromo = 'aprobado'
+                AND CURDATE() BETWEEN p.fechaInicio AND p.fechaFin";
+        return mysqli_query($this->db, $query);
+    }
+
+    public function buscarVuelosGestion($idAerolinea, $texto = '', $tipo = '', $estado = '') {
+        $idAerolinea = (int)$idAerolinea;
+        $where = "WHERE idAerolinea = $idAerolinea";
+
+        if (!empty($texto)) {
+            $texto = mysqli_real_escape_string($this->db, $texto);
+            $where .= " AND (origen LIKE '%$texto%' OR destino LIKE '%$texto%')";
+        }
+        if (!empty($tipo)) {
+            $tipo = mysqli_real_escape_string($this->db, $tipo);
+            $where .= " AND tipoVuelo = '$tipo'";
+        }
+        if ($estado !== '') {
+            $estado = (int)$estado;
+            $where .= " AND estadoVuelo = $estado";
+        }
+
+        $query = "SELECT * FROM vuelo $where ORDER BY idVuelo DESC";
+        return mysqli_query($this->db, $query);
     }
 }
